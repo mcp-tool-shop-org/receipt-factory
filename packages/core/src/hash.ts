@@ -17,10 +17,14 @@ export function computeDigest(obj: unknown): string {
  * those are computed by this function.
  */
 export function computeIntegrity(draft: Record<string, unknown>): ReceiptIntegrity {
-  const digest = computeDigest(draft);
+  const canonical = canonicalize(draft);
+  const digest = createHash("sha256").update(canonical, "utf-8").digest("hex");
+  const canonical_length_bytes = Buffer.byteLength(canonical, "utf-8");
   return {
     algorithm: "sha256",
     digest,
+    canonical_format_version: "1.0",
+    canonical_length_bytes,
   };
 }
 

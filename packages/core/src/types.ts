@@ -63,12 +63,17 @@ export interface ReceiptPolicy {
 }
 
 /**
- * Integrity information — content hash and optional signature.
+ * Integrity information — content hash, trust spine, and optional signature.
  */
 export interface ReceiptIntegrity {
   algorithm: "sha256";
   digest: string;
+  canonical_format_version: "1.0";
+  canonical_length_bytes: number;
   signature?: string;
+  signed_by?: string;
+  signed_at?: string;
+  rekor_log_id?: string;
 }
 
 /**

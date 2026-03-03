@@ -3,6 +3,7 @@ import { verifyReceipt, formatResult } from "@mcptoolshop/rf-verify";
 
 export interface VerifyOptions {
   offline: boolean;
+  strict: boolean;
 }
 
 export async function handleVerify(file: string, opts: VerifyOptions): Promise<void> {
@@ -10,7 +11,10 @@ export async function handleVerify(file: string, opts: VerifyOptions): Promise<v
     const raw = readFileSync(file, "utf-8");
     const receipt = JSON.parse(raw) as Record<string, unknown>;
 
-    const result = await verifyReceipt(receipt, { offline: opts.offline });
+    const result = await verifyReceipt(receipt, {
+      offline: opts.offline,
+      strict: opts.strict,
+    });
     console.log(formatResult(result));
 
     if (!result.valid) {

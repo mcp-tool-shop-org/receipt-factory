@@ -7,8 +7,10 @@ import { fetchArtifacts } from "./artifacts.js";
 import type { GitHubCIEvidence, FetchOptions } from "./types.js";
 
 export type { GitHubCIEvidence, FetchOptions } from "./types.js";
+export type { GitHubReleaseEvidence, GitHubReleaseAsset } from "./releases.js";
 export { detectContext } from "./context.js";
 export { isGhAvailable } from "./gh.js";
+export { fetchRelease } from "./releases.js";
 
 /**
  * Fetch all CI evidence for a GitHub Actions run.

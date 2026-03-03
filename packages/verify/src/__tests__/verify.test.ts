@@ -3,6 +3,7 @@ import { ReceiptBuilder } from "@mcptoolshop/rf-core";
 import { checkSchema } from "../schema-check.js";
 import { checkHash } from "../hash-check.js";
 import { checkLinks } from "../link-check.js";
+import { checkLint } from "../lint-check.js";
 import { verifyReceipt } from "../index.js";
 
 function makeReceipt() {
@@ -39,22 +40,34 @@ describe("checkSchema", () => {
 describe("checkHash", () => {
   it("passes for an untampered receipt", () => {
     const receipt = makeReceipt();
-    const result = checkHash(receipt as unknown as Record<string, unknown>);
-    expect(result.passed).toBe(true);
+    const results = checkHash(receipt as unknown as Record<string, unknown>);
+    const hashResult = results.find((r) => r.name === "hash");
+    expect(hashResult?.passed).toBe(true);
+  });
+
+  it("verifies format version and byte length", () => {
+    const receipt = makeReceipt();
+    const results = checkHash(receipt as unknown as Record<string, unknown>);
+    const formatCheck = results.find((r) => r.name === "format_version");
+    const byteCheck = results.find((r) => r.name === "byte_length");
+    expect(formatCheck?.passed).toBe(true);
+    expect(byteCheck?.passed).toBe(true);
   });
 
   it("fails for a tampered receipt", () => {
     const receipt = makeReceipt();
     const tampered = { ...receipt, intent: "tampered!" } as unknown as Record<string, unknown>;
-    const result = checkHash(tampered);
-    expect(result.passed).toBe(false);
-    expect(result.message).toContain("mismatch");
+    const results = checkHash(tampered);
+    const hashResult = results.find((r) => r.name === "hash");
+    expect(hashResult?.passed).toBe(false);
+    expect(hashResult?.message).toContain("mismatch");
   });
 
   it("fails when integrity is missing", () => {
-    const result = checkHash({ kind: "ci_run" });
-    expect(result.passed).toBe(false);
-    expect(result.message).toContain("No integrity digest");
+    const results = checkHash({ kind: "ci_run" });
+    expect(results).toHaveLength(1);
+    expect(results[0].passed).toBe(false);
+    expect(results[0].message).toContain("No integrity digest");
   });
 });
 
@@ -84,7 +97,7 @@ describe("verifyReceipt", () => {
     const result = await verifyReceipt(receipt, { offline: true });
 
     expect(result.valid).toBe(true);
-    expect(result.checks).toHaveLength(3);
+    expect(result.checks.length).toBeGreaterThanOrEqual(3);
     expect(result.checks.every((c) => c.passed)).toBe(true);
   });
 
@@ -96,5 +109,90 @@ describe("verifyReceipt", () => {
     expect(result.valid).toBe(false);
     const hashCheck = result.checks.find((c) => c.name === "hash");
     expect(hashCheck?.passed).toBe(false);
+  });
+
+  it("does not run lint checks in normal mode", async () => {
+    const receipt = makeReceipt() as unknown as Record<string, unknown>;
+    const result = await verifyReceipt(receipt, { offline: true });
+    const lintChecks = result.checks.filter((c) => c.name.startsWith("lint:"));
+    expect(lintChecks).toHaveLength(0);
+  });
+
+  it("runs lint checks in strict mode", async () => {
+    const receipt = makeReceipt() as unknown as Record<string, unknown>;
+    const result = await verifyReceipt(receipt, { offline: true, strict: true });
+    const lintChecks = result.checks.filter((c) => c.name.startsWith("lint:"));
+    expect(lintChecks.length).toBeGreaterThan(0);
+  });
+});
+
+describe("checkLint", () => {
+  function makeFullReceipt() {
+    return new ReceiptBuilder("ci_run")
+      .subject({
+        type: "repository",
+        name: "test-repo",
+        ref: "abc123",
+        url: "https://github.com/org/repo",
+      })
+      .intent("Verify that all tests pass and artifacts build correctly")
+      .createdAt("2026-03-03T12:00:00.000Z")
+      .inputs({ commit: "abc123", branch: "main" })
+      .addOutput({ name: "results.xml", digest: "sha256:abc" })
+      .addEvidence({
+        type: "workflow_run",
+        url: "https://github.com/org/repo/actions/runs/123",
+        description: "CI run",
+      })
+      .addStep("Download and run rf verify")
+      .addCommand("rf verify receipt.json")
+      .environment({ runner: "ubuntu-latest", tool_versions: { node: "20.11.0" } })
+      .policy({
+        redacted_fields: [],
+        required_checks: ["schema", "hash"],
+      })
+      .meta("factory_version", "1.0.0")
+      .build() as unknown as Record<string, unknown>;
+  }
+
+  it("passes all lint checks for a well-formed receipt", () => {
+    const results = checkLint(makeFullReceipt());
+    expect(results.every((r) => r.passed)).toBe(true);
+    expect(results).toHaveLength(7);
+  });
+
+  it("fails lint:intent for short intent", () => {
+    const receipt = makeFullReceipt();
+    (receipt as Record<string, unknown>).intent = "test";
+    const results = checkLint(receipt);
+    const intentCheck = results.find((r) => r.name === "lint:intent");
+    expect(intentCheck?.passed).toBe(false);
+  });
+
+  it("fails lint:subject_url when subject has no URL", () => {
+    const receipt = makeFullReceipt();
+    (receipt as Record<string, unknown>).subject = { type: "repo", name: "test" };
+    const results = checkLint(receipt);
+    const urlCheck = results.find((r) => r.name === "lint:subject_url");
+    expect(urlCheck?.passed).toBe(false);
+  });
+
+  it("fails lint:evidence when evidence is empty", () => {
+    const receipt = makeFullReceipt();
+    (receipt as Record<string, unknown>).evidence = [];
+    const results = checkLint(receipt);
+    const evidenceCheck = results.find((r) => r.name === "lint:evidence");
+    expect(evidenceCheck?.passed).toBe(false);
+  });
+
+  it("fails lint:required_checks when policy has no required checks", () => {
+    const receipt = makeFullReceipt();
+    (receipt as Record<string, unknown>).policy = {
+      redacted_fields: [],
+      required_checks: [],
+    };
+    const results = checkLint(receipt);
+    const policyCheck = results.find((r) => r.name === "lint:required_checks");
+    expect(policyCheck?.passed).toBe(false);
   });
 });

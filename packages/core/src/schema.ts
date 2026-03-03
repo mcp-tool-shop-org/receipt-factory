@@ -47,7 +47,12 @@ export const receiptPolicySchema = z.object({
 export const receiptIntegritySchema = z.object({
   algorithm: z.literal("sha256"),
   digest: z.string().min(1),
+  canonical_format_version: z.literal("1.0"),
+  canonical_length_bytes: z.number().int().positive(),
   signature: z.string().optional(),
+  signed_by: z.string().optional(),
+  signed_at: z.string().datetime().optional(),
+  rekor_log_id: z.string().optional(),
 });
 
 export const receiptSchema = z.object({

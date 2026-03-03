@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/rf-cli",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The rf command — create, render, and verify receipts",
   "type": "module",
   "main": "dist/cli.js",
@@ -25,6 +25,8 @@
     "@mcptoolshop/rf-verify": "workspace:*",
     "@mcptoolshop/rf-adapter-github": "workspace:*",
     "@mcptoolshop/rf-pipeline-ci": "workspace:*",
+    "@mcptoolshop/rf-pipeline-release": "workspace:*",
+    "@mcptoolshop/rf-sign": "workspace:*",
     "commander": "^13.0.0"
   },
   "devDependencies": {
