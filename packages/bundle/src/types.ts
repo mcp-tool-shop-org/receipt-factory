@@ -66,6 +66,8 @@ export interface CreateBundleResult {
 export interface VerifyBundleOptions {
   /** Enable strict lint checks on receipts. */
   strict?: boolean;
+  /** Require a valid bundle-level signature (detached sidecar). */
+  requireBundleSignature?: boolean;
 }
 
 /**
@@ -87,11 +89,21 @@ export interface BundleReceiptCheck {
 }
 
 /**
+ * Result of a bundle-level signature check.
+ */
+export interface BundleSignatureCheck {
+  passed: boolean;
+  message: string;
+}
+
+/**
  * Result of verifying a bundle.
  */
 export interface VerifyBundleResult {
   valid: boolean;
   manifest: BundleManifest;
+  /** Bundle-level signature check (only present when requireBundleSignature is set). */
+  signatureCheck?: BundleSignatureCheck;
   hashChecks: BundleHashCheck[];
   receiptChecks: BundleReceiptCheck[];
 }

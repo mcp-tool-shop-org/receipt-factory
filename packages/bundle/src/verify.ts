@@ -1,10 +1,11 @@
 import { createHash } from "node:crypto";
-import { mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { randomBytes } from "node:crypto";
 import AdmZip from "adm-zip";
 import { RfError } from "@mcptoolshop/rf-core";
+import { isCosignAvailable, verifyBlob } from "@mcptoolshop/rf-sign";
 import { verifyReceipt } from "@mcptoolshop/rf-verify";
 import type {
   BundleManifest,
@@ -13,10 +14,16 @@ import type {
   VerifyBundleResult,
   BundleHashCheck,
   BundleReceiptCheck,
+  BundleSignatureCheck,
 } from "./types.js";
 
 /**
- * Verify a receipt bundle — extract, check hashes, verify each receipt.
+ * Verify a receipt bundle — check signature, extract, check hashes, verify each receipt.
+ *
+ * Verification order:
+ * 1. Bundle signature (if requireBundleSignature)
+ * 2. File integrity (hashes.json)
+ * 3. Semantic integrity (receipt verification)
  *
  * Bundle-internal semantics: reference resolution happens ONLY within
  * the bundle. No network access, no filesystem wandering.
@@ -25,6 +32,40 @@ export async function verifyBundle(
   zipPath: string,
   opts: VerifyBundleOptions = {},
 ): Promise<VerifyBundleResult> {
+  // Step 0: Bundle-level signature verification (before unpacking)
+  let signatureCheck: BundleSignatureCheck | undefined;
+
+  if (opts.requireBundleSignature) {
+    signatureCheck = await verifyBundleSignature(zipPath);
+
+    // If signature fails, return early — no point unpacking a bundle
+    // whose provenance can't be established
+    if (!signatureCheck.passed) {
+      // We still need manifest for the result shape, so open the zip just for that
+      let manifest: BundleManifest;
+      try {
+        const zip = new AdmZip(zipPath);
+        manifest = readBundleJson<BundleManifest>(zip, "manifest.json", "RF_BUNDLE_NO_MANIFEST");
+      } catch {
+        manifest = {
+          bundle_version: "1.0",
+          created_at: "",
+          root_receipt: "",
+          factory_version: "",
+          contents: { receipts: [], evidence: [], signatures: [] },
+        };
+      }
+
+      return {
+        valid: false,
+        manifest,
+        signatureCheck,
+        hashChecks: [],
+        receiptChecks: [],
+      };
+    }
+  }
+
   // Open the zip
   let zip: AdmZip;
   try {
@@ -139,9 +180,16 @@ export async function verifyBundle(
     // Compute overall validity
     const hashesValid = hashChecks.every((c) => c.passed);
     const receiptsValid = receiptChecks.every((c) => c.valid);
-    const valid = hashesValid && receiptsValid;
+    const sigValid = signatureCheck ? signatureCheck.passed : true;
+    const valid = sigValid && hashesValid && receiptsValid;
 
-    return { valid, manifest, hashChecks, receiptChecks };
+    return {
+      valid,
+      manifest,
+      ...(signatureCheck ? { signatureCheck } : {}),
+      hashChecks,
+      receiptChecks,
+    };
   } finally {
     // Clean up temp directory
     try {
@@ -150,6 +198,53 @@ export async function verifyBundle(
       // Best-effort cleanup
     }
   }
+}
+
+/**
+ * Verify the detached signature of a bundle zip.
+ *
+ * Looks for sidecar .sig file next to the bundle.
+ * The zip contents are never inspected — this verifies the zip artifact itself.
+ */
+async function verifyBundleSignature(
+  zipPath: string,
+): Promise<BundleSignatureCheck> {
+  const sigPath = `${zipPath}.sig`;
+  const certPath = `${zipPath}.cert`;
+
+  if (!existsSync(sigPath)) {
+    return {
+      passed: false,
+      message: `Bundle signature not found: ${sigPath}`,
+    };
+  }
+
+  const available = await isCosignAvailable();
+  if (!available) {
+    return {
+      passed: false,
+      message: "cosign not available — cannot verify bundle signature",
+    };
+  }
+
+  const hasCert = existsSync(certPath);
+
+  const valid = await verifyBlob(zipPath, {
+    signaturePath: sigPath,
+    certificatePath: hasCert ? certPath : undefined,
+  });
+
+  if (valid) {
+    return {
+      passed: true,
+      message: "Bundle signature verified via cosign",
+    };
+  }
+
+  return {
+    passed: false,
+    message: "Bundle signature verification failed — bundle may have been tampered with after signing",
+  };
 }
 
 /**

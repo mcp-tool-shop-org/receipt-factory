@@ -15,6 +15,7 @@ import { handlePolicyInit } from "./commands/policy.js";
 import {
   handleBundleCreate,
   handleBundleVerify,
+  handleBundleSign,
   handleBundleInspect,
 } from "./commands/bundle.js";
 
@@ -62,6 +63,7 @@ program
   .option("--refs-strict", "Fail verification on missing or unreadable references", false)
   .option("--policy <path>", "Path to policy.json for lint rules")
   .option("--require-policy-signature", "Require a signed policy (cosign sidecar)", false)
+  .option("--require-bundle-signature", "Require a signed bundle (cosign sidecar, for .zip bundles)", false)
   .option("--receipts-dir <dir>", "Directory for resolving reference paths")
   .action(handleVerify);
 
@@ -139,7 +141,15 @@ bundleCmd
   .command("verify <file>")
   .description("Verify a receipt bundle")
   .option("--strict", "Enable strict lint checks", false)
+  .option("--require-bundle-signature", "Require a signed bundle (cosign sidecar)", false)
   .action(handleBundleVerify);
+
+bundleCmd
+  .command("sign <file>")
+  .description("Sign a bundle with cosign (detached sidecar)")
+  .option("--keyless", "Use keyless signing (OIDC, for CI)", false)
+  .option("--key <path>", "Path to cosign private key")
+  .action(handleBundleSign);
 
 bundleCmd
   .command("inspect <file>")

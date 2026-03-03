@@ -132,6 +132,20 @@ rf bundle create receipt.json --follow --include-evidence --policy policy.json
 rf bundle create receipt.json --out bundles/release-v1.0.0.bundle.zip
 ```
 
+### Signing a bundle
+
+Bundles can be signed with cosign to establish bundle authority — who created this parcel? The signature is detached (the zip is never mutated):
+
+```bash
+# Sign with OIDC (keyless, for CI)
+rf bundle sign bundles/abc123.bundle.zip --keyless
+
+# Sign with a private key
+rf bundle sign bundles/abc123.bundle.zip --key cosign.key
+```
+
+This produces `bundle.zip.sig` (and `.cert` for keyless) next to the zip.
+
 ### Verifying a bundle
 
 ```bash
@@ -143,12 +157,18 @@ rf verify bundles/abc123.bundle.zip
 
 # Strict lint checks on all receipts in the bundle
 rf bundle verify bundles/abc123.bundle.zip --strict
+
+# Require a valid bundle-level signature
+rf bundle verify bundles/abc123.bundle.zip --require-bundle-signature
+rf verify bundles/abc123.bundle.zip --require-bundle-signature
 ```
 
 Bundle verification is self-contained:
 - Every file's SHA-256 is checked against `hashes.json`
 - Every receipt inside the bundle is verified offline (no network access)
 - References resolve only within the bundle — no filesystem wandering
+
+When `--require-bundle-signature` is set, verification checks the bundle's cosign sidecar first. If the signature fails, verification returns early — there's no point unpacking a bundle whose provenance can't be established.
 
 ### Inspecting a bundle
 

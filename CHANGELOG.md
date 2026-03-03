@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-03-03
+
+### Added
+
+- **Bundle signing** (`@mcptoolshop/rf-sign`): `signBundle()` signs a bundle zip with cosign (detached sidecar)
+  - Produces `bundle.zip.sig` and `bundle.zip.cert` — the zip contents are never mutated
+  - Same sidecar pattern as `signReceipt()` and `signPolicy()`
+- **Bundle signature verification** (`@mcptoolshop/rf-bundle`): `verifyBundle()` now supports `requireBundleSignature` option
+  - Verification order: 1) bundle signature → 2) file integrity (hashes.json) → 3) semantic integrity (receipts)
+  - If signature fails, verification returns early — no point unpacking a bundle whose provenance can't be established
+  - Sidecar search: looks for `.sig` and `.cert` files next to the bundle
+  - `BundleSignatureCheck` type added to `VerifyBundleResult`
+- **`rf bundle sign <file>`**: Sign a bundle with cosign (detached sidecar)
+  - `--keyless` for OIDC-based signing in CI
+  - `--key <path>` for local key-based signing
+- **`rf bundle verify --require-bundle-signature`**: Require a valid bundle-level signature
+- **`rf verify <file.zip> --require-bundle-signature`**: Auto-detect passthrough — flag routes to bundle verification
+
+### Changed
+
+- `@mcptoolshop/rf-bundle` now depends on `@mcptoolshop/rf-sign` (for `verifyBlob`/`isCosignAvailable`)
+- 152 tests across 13 packages (up from 147)
+
 ## [1.5.0] - 2026-03-03
 
 ### Added

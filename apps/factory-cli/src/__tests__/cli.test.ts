@@ -16,7 +16,7 @@ function run(...args: string[]): string {
 describe("rf CLI", () => {
   it("shows version", () => {
     const output = run("--version");
-    expect(output.trim()).toBe("1.5.0");
+    expect(output.trim()).toBe("1.6.0");
   });
 
   it("shows help", () => {
@@ -70,6 +70,7 @@ describe("rf CLI", () => {
     expect(output).toContain("--refs-strict");
     expect(output).toContain("--policy");
     expect(output).toContain("--require-policy-signature");
+    expect(output).toContain("--require-bundle-signature");
   });
 
   it("render --help shows formats", () => {
@@ -104,6 +105,13 @@ describe("rf CLI", () => {
   it("bundle verify --help shows options", () => {
     const output = run("bundle", "verify", "--help");
     expect(output).toContain("--strict");
+    expect(output).toContain("--require-bundle-signature");
+  });
+
+  it("bundle sign --help shows options", () => {
+    const output = run("bundle", "sign", "--help");
+    expect(output).toContain("--keyless");
+    expect(output).toContain("--key");
   });
 
   it("bundle inspect --help shows description", () => {

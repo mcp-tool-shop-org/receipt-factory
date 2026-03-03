@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { createHash } from "node:crypto";
 import AdmZip from "adm-zip";
 import { ReceiptBuilder, computeDigest } from "@mcptoolshop/rf-core";
+import { isCosignAvailable, signBundle } from "@mcptoolshop/rf-sign";
 import { createBundle } from "../create.js";
 import { verifyBundle } from "../verify.js";
 import { inspectBundle } from "../inspect.js";
@@ -68,7 +69,7 @@ describe("receipt bundles", () => {
     expect(result.zipPath).toBe(outputPath);
     expect(result.manifest.bundle_version).toBe("1.0");
     expect(result.manifest.root_receipt).toBe("receipts/root.json");
-    expect(result.manifest.factory_version).toBe("1.5.0");
+    expect(result.manifest.factory_version).toBe("1.6.0");
     expect(result.manifest.contents.receipts).toContain("receipts/root.json");
     expect(result.hashes.algorithm).toBe("sha256");
     expect(result.hashes.files["receipts/root.json"]).toBeDefined();
@@ -169,7 +170,7 @@ describe("receipt bundles", () => {
 
     expect(manifest.bundle_version).toBe("1.0");
     expect(manifest.root_receipt).toBe("receipts/root.json");
-    expect(manifest.factory_version).toBe("1.5.0");
+    expect(manifest.factory_version).toBe("1.6.0");
     expect(manifest.contents.receipts).toContain("receipts/root.json");
     expect(manifest.created_at).toBeDefined();
   });
@@ -272,5 +273,95 @@ describe("receipt bundles", () => {
     // But manifest.json and VERIFY.md should be hashed
     expect(result.hashes.files["manifest.json"]).toBeDefined();
     expect(result.hashes.files["VERIFY.md"]).toBeDefined();
+  });
+});
+
+describe("bundle signing", () => {
+  let tmpDir: string;
+
+  beforeEach(() => {
+    tmpDir = mkdtempSync(join(tmpdir(), "rf-bundle-sign-"));
+  });
+
+  afterEach(() => {
+    rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  it("requireBundleSignature fails when no .sig file exists", async () => {
+    const receipt = buildTestReceipt();
+    const receiptPath = join(tmpDir, "receipt.json");
+    writeFileSync(receiptPath, JSON.stringify(receipt, null, 2));
+
+    const outputPath = join(tmpDir, "unsigned.bundle.zip");
+    createBundle(receiptPath, { output: outputPath });
+
+    // Verify with requireBundleSignature — should fail (no .sig file)
+    const result = await verifyBundle(outputPath, {
+      requireBundleSignature: true,
+    });
+
+    expect(result.valid).toBe(false);
+    expect(result.signatureCheck).toBeDefined();
+    expect(result.signatureCheck!.passed).toBe(false);
+    expect(result.signatureCheck!.message).toContain("signature not found");
+    // Hash and receipt checks should be empty (early return on sig failure)
+    expect(result.hashChecks).toHaveLength(0);
+    expect(result.receiptChecks).toHaveLength(0);
+  });
+
+  it("signatureCheck is absent when requireBundleSignature is not set", async () => {
+    const receipt = buildTestReceipt();
+    const receiptPath = join(tmpDir, "receipt.json");
+    writeFileSync(receiptPath, JSON.stringify(receipt, null, 2));
+
+    const outputPath = join(tmpDir, "no-sig-required.bundle.zip");
+    createBundle(receiptPath, { output: outputPath });
+
+    // Verify without requireBundleSignature — no signature check
+    const result = await verifyBundle(outputPath);
+
+    expect(result.valid).toBe(true);
+    expect(result.signatureCheck).toBeUndefined();
+  });
+
+  it("fake .sig file fails bundle signature verification", async () => {
+    const receipt = buildTestReceipt();
+    const receiptPath = join(tmpDir, "receipt.json");
+    writeFileSync(receiptPath, JSON.stringify(receipt, null, 2));
+
+    const outputPath = join(tmpDir, "fake-sig.bundle.zip");
+    createBundle(receiptPath, { output: outputPath });
+
+    // Write a fake .sig file — it's not a real cosign signature
+    writeFileSync(`${outputPath}.sig`, "not-a-valid-signature");
+
+    // If cosign isn't installed, the check fails with "cosign not available"
+    // If cosign is installed, the check fails with "verification failed"
+    // Either way: it should not pass
+    const result = await verifyBundle(outputPath, {
+      requireBundleSignature: true,
+    });
+
+    expect(result.valid).toBe(false);
+    expect(result.signatureCheck).toBeDefined();
+    expect(result.signatureCheck!.passed).toBe(false);
+  });
+
+  it("signBundle throws when cosign is not installed", async () => {
+    const isInstalled = await isCosignAvailable();
+    if (isInstalled) {
+      return; // Skip — can't test this path with cosign present
+    }
+
+    const receipt = buildTestReceipt();
+    const receiptPath = join(tmpDir, "receipt.json");
+    writeFileSync(receiptPath, JSON.stringify(receipt, null, 2));
+
+    const outputPath = join(tmpDir, "sign-fail.bundle.zip");
+    createBundle(receiptPath, { output: outputPath });
+
+    await expect(
+      signBundle(outputPath, { keyless: true }),
+    ).rejects.toThrow("cosign is not installed");
   });
 });

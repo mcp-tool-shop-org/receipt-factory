@@ -12,6 +12,7 @@ export interface VerifyOptions {
   refsStrict?: boolean;
   policy?: string;
   requirePolicySignature?: boolean;
+  requireBundleSignature?: boolean;
   receiptsDir?: string;
 }
 
@@ -19,7 +20,16 @@ export async function handleVerify(file: string, opts: VerifyOptions): Promise<v
   // Auto-detect bundles: if the file is a .zip, delegate to bundle verification
   if (extname(file).toLowerCase() === ".zip") {
     try {
-      const result = await verifyBundle(file, { strict: opts.strict });
+      const result = await verifyBundle(file, {
+        strict: opts.strict,
+        requireBundleSignature: opts.requireBundleSignature,
+      });
+
+      // Report signature check (if present)
+      if (result.signatureCheck) {
+        const icon = result.signatureCheck.passed ? "✓" : "✗";
+        console.log(`Signature: ${icon} ${result.signatureCheck.message}`);
+      }
 
       const hashPassed = result.hashChecks.filter((c) => c.passed).length;
       const hashTotal = result.hashChecks.length;

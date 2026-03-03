@@ -85,6 +85,9 @@ importers:
       '@mcptoolshop/rf-core':
         specifier: workspace:*
         version: link:../core
+      '@mcptoolshop/rf-sign':
+        specifier: workspace:*
+        version: link:../sign
       '@mcptoolshop/rf-verify':
         specifier: workspace:*
         version: link:../verify

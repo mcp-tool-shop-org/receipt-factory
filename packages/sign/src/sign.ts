@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { computeDigest } from "@mcptoolshop/rf-core";
 import { RfError } from "@mcptoolshop/rf-core";
@@ -110,6 +111,53 @@ export async function signPolicy(
   const certPath = `${policyPath}.cert`;
 
   const result = await signBlob(policyPath, {
+    keyless: opts.keyless,
+    keyPath: opts.keyPath,
+    outputSignature: sigPath,
+    outputCertificate: opts.keyless ? certPath : undefined,
+  });
+
+  const signedAt = new Date().toISOString();
+
+  return {
+    digest,
+    signature: result.signature || readSafe(sigPath),
+    certificate: result.certificate || readSafe(certPath),
+    signedAt,
+    sidecarPaths: {
+      signature: sigPath,
+      certificate: opts.keyless ? certPath : undefined,
+    },
+  };
+}
+
+/**
+ * Sign a bundle zip file.
+ *
+ * Produces detached sidecar files: bundle.zip.sig (and bundle.zip.cert for keyless).
+ * The zip contents are never modified — the signature covers the zip artifact itself.
+ */
+export async function signBundle(
+  bundlePath: string,
+  opts: Omit<SignOptions, "embed"> = {},
+): Promise<SignResult> {
+  const available = await isCosignAvailable();
+  if (!available) {
+    throw new RfError({
+      code: "RF_COSIGN_MISSING",
+      message: "cosign is not installed or not in PATH",
+      hint: "Install cosign: https://docs.sigstore.dev/cosign/system_config/installation/",
+    });
+  }
+
+  // Compute SHA-256 digest of the zip file for the result
+  const content = readFileSync(bundlePath);
+  const digest = createHash("sha256").update(content).digest("hex");
+
+  const sigPath = `${bundlePath}.sig`;
+  const certPath = `${bundlePath}.cert`;
+
+  const result = await signBlob(bundlePath, {
     keyless: opts.keyless,
     keyPath: opts.keyPath,
     outputSignature: sigPath,

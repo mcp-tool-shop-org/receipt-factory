@@ -3,6 +3,7 @@ import {
   verifyBundle,
   inspectBundle,
 } from "@mcptoolshop/rf-bundle";
+import { signBundle } from "@mcptoolshop/rf-sign";
 
 export interface BundleCreateOptions {
   follow?: boolean;
@@ -14,10 +15,17 @@ export interface BundleCreateOptions {
 
 export interface BundleVerifyOptions {
   strict?: boolean;
+  requireBundleSignature?: boolean;
+}
+
+export interface BundleSignOptions {
+  keyless: boolean;
+  key?: string;
+  out?: string;
 }
 
 /**
- * Handle `rf bundle <receipt.json>` — create a bundle.
+ * Handle `rf bundle create <receipt.json>` — create a bundle.
  */
 export async function handleBundleCreate(
   file: string,
@@ -62,7 +70,16 @@ export async function handleBundleVerify(
   opts: BundleVerifyOptions,
 ): Promise<void> {
   try {
-    const result = await verifyBundle(file, { strict: opts.strict });
+    const result = await verifyBundle(file, {
+      strict: opts.strict,
+      requireBundleSignature: opts.requireBundleSignature,
+    });
+
+    // Report signature check (if present)
+    if (result.signatureCheck) {
+      const icon = result.signatureCheck.passed ? "✓" : "✗";
+      console.log(`Signature: ${icon} ${result.signatureCheck.message}`);
+    }
 
     // Report hash checks
     const hashPassed = result.hashChecks.filter((c) => c.passed).length;
@@ -98,6 +115,35 @@ export async function handleBundleVerify(
       console.error(`[RF_BUNDLE] ${err instanceof Error ? err.message : String(err)}`);
     }
     process.exit(1);
+  }
+}
+
+/**
+ * Handle `rf bundle sign <bundle.zip>` — sign a bundle with cosign.
+ */
+export async function handleBundleSign(
+  file: string,
+  opts: BundleSignOptions,
+): Promise<void> {
+  try {
+    const result = await signBundle(file, {
+      keyless: opts.keyless,
+      keyPath: opts.key,
+    });
+
+    console.log(`Signed bundle: ${file}`);
+    console.log(`  Digest: ${result.digest}`);
+    console.log(`  Signed at: ${result.signedAt}`);
+    if (result.sidecarPaths?.signature) {
+      console.log(`  Signature: ${result.sidecarPaths.signature}`);
+    }
+    if (result.sidecarPaths?.certificate) {
+      console.log(`  Certificate: ${result.sidecarPaths.certificate}`);
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`[RF_SIGN] ${message}`);
+    process.exit(2);
   }
 }
 

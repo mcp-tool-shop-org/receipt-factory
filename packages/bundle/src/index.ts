@@ -8,6 +8,7 @@ export type {
   VerifyBundleResult,
   BundleHashCheck,
   BundleReceiptCheck,
+  BundleSignatureCheck,
 } from "./types.js";
 
 // Create
