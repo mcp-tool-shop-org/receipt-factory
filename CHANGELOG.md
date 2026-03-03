@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-03-03
+
+### Added
+
+- **`rf verify --refs-strict`**: Strict reference mode — missing or unreadable references fail verification (default stays best-effort)
+- **Policy identity**: Receipts embed `policy_identity.hash` recording which lint policy was applied at creation time
+  - `PolicyIdentity` type: `hash` (required), optional `version`, `path`, `signed`, `signatureRef`
+  - `policyIdentity()` method on `ReceiptBuilder` for fluent chaining
+  - `policyIdentitySchema` (Zod) for validation
+  - `computePolicyHash(rules)` utility in `@mcptoolshop/rf-policy`
+- **Policy integrity verification**: `checkPolicyIntegrity()` compares receipt's embedded policy hash against supplied policy
+  - Mismatch = fail (integrity, not lint quality)
+  - No policy supplied = info only (backward compatible)
+- **Policy signing**: `rf policy sign <file>` signs a policy file with cosign (detached sidecar)
+  - `signPolicy()` function in `@mcptoolshop/rf-sign`
+  - Produces `policy.json.sig` and `policy.json.cert` (keyless)
+  - Policy file itself is never modified — hash in receipts refers to original content
+- **`rf verify --require-policy-signature`**: Requires a cosign-signed policy for verification
+- **Rendered policy hash**: Policy hash appears on the human front page of rendered receipts
+
+### Changed
+
+- Reference checks in best-effort mode (default) now report missing/unreadable references as `passed: true` (informational) instead of `passed: false`
+- In `--refs-strict` mode, missing/unreadable references fail as before; hash mismatches always fail regardless of mode
+- Verification pipeline always runs policy integrity check when receipt has `policy_identity`
+- 134 tests across 12 packages (up from 127/12)
+
 ## [1.3.0] - 2026-03-03
 
 ### Added

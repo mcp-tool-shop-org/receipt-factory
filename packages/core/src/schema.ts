@@ -55,6 +55,14 @@ export const receiptIntegritySchema = z.object({
   rekor_log_id: z.string().optional(),
 });
 
+export const policyIdentitySchema = z.object({
+  hash: z.string().min(1),
+  version: z.string().optional(),
+  path: z.string().optional(),
+  signed: z.boolean().optional(),
+  signatureRef: z.string().optional(),
+});
+
 export const receiptReferenceSchema = z.object({
   kind: z.enum(["receipt", "evidence_pack"]),
   hash: z.string().min(1),
@@ -77,6 +85,7 @@ export const receiptSchema = z.object({
   environment: receiptEnvironmentSchema,
   policy: receiptPolicySchema,
   integrity: receiptIntegritySchema,
+  policy_identity: policyIdentitySchema.optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
   references: z.array(receiptReferenceSchema).optional(),
 });

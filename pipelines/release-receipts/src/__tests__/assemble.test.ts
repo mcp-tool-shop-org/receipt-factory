@@ -71,6 +71,6 @@ describe("release assemble", () => {
   it("sets pipeline metadata", () => {
     const receipt = assemble(makeReleaseEvidence());
     expect(receipt.metadata?.pipeline).toBe("release-receipts");
-    expect(receipt.metadata?.factory_version).toBe("1.3.0");
+    expect(receipt.metadata?.factory_version).toBe("1.4.0");
   });
 });

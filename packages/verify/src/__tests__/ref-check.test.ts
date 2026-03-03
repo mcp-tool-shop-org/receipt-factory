@@ -58,7 +58,7 @@ describe("checkReferences", () => {
     expect(checks[0].message).toContain("declared");
   });
 
-  it("fails when referenced file is missing", async () => {
+  it("reports missing file in best-effort mode (does not fail)", async () => {
     const dir = makeTmpDir();
 
     const receipt = buildCiReceipt() as unknown as Record<string, unknown>;
@@ -72,10 +72,11 @@ describe("checkReferences", () => {
     ];
 
     const checks = await checkReferences(receipt, { receiptsDir: dir });
-    const failCheck = checks.find((c) => !c.passed);
-    expect(failCheck).toBeDefined();
-    expect(failCheck!.message).toContain("not found");
-    expect(failCheck!.message).toContain("nonexistent.json");
+    const reportCheck = checks.find((c) => c.message.includes("not found"));
+    expect(reportCheck).toBeDefined();
+    expect(reportCheck!.message).toContain("nonexistent.json");
+    // Best-effort: passed is true (reported but not a failure)
+    expect(reportCheck!.passed).toBe(true);
 
     rmSync(dir, { recursive: true, force: true });
   });
@@ -204,5 +205,52 @@ describe("checkReferences", () => {
       c.message.includes("declared"),
     );
     expect(declaredChecks.length).toBe(3);
+  });
+
+  it("best-effort mode: missing reference reports but does not fail", async () => {
+    const dir = makeTmpDir();
+
+    const receipt = buildCiReceipt() as unknown as Record<string, unknown>;
+    receipt.references = [
+      {
+        kind: "receipt",
+        hash: "sha256:doesnotexist",
+        description: "Missing receipt (best-effort)",
+        path: "ci/nonexistent.json",
+      },
+    ];
+
+    // Default (refsStrict: false) — missing ref should pass (reported only)
+    const checks = await checkReferences(receipt, { receiptsDir: dir });
+    const missingCheck = checks.find((c) => c.message.includes("not found"));
+    expect(missingCheck).toBeDefined();
+    expect(missingCheck!.passed).toBe(true);
+
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  it("strict mode: missing reference fails verification", async () => {
+    const dir = makeTmpDir();
+
+    const receipt = buildCiReceipt() as unknown as Record<string, unknown>;
+    receipt.references = [
+      {
+        kind: "receipt",
+        hash: "sha256:doesnotexist",
+        description: "Missing receipt (strict)",
+        path: "ci/nonexistent.json",
+      },
+    ];
+
+    // refsStrict: true — missing ref should fail
+    const checks = await checkReferences(receipt, {
+      receiptsDir: dir,
+      refsStrict: true,
+    });
+    const missingCheck = checks.find((c) => c.message.includes("not found"));
+    expect(missingCheck).toBeDefined();
+    expect(missingCheck!.passed).toBe(false);
+
+    rmSync(dir, { recursive: true, force: true });
   });
 });

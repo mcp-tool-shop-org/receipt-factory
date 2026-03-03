@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { RfError } from "@mcptoolshop/rf-core";
+import { RfError, computeDigest } from "@mcptoolshop/rf-core";
 import type { PolicyPack, PolicyRules } from "./types.js";
 import { DEFAULT_RULES } from "./defaults.js";
 
@@ -78,4 +78,13 @@ export function loadPolicy(path: string): PolicyPack {
     description: (parsed.description as string) ?? "",
     rules,
   };
+}
+
+/**
+ * Compute a deterministic hash of policy rules.
+ * Uses the same canonical JSON + SHA-256 as receipt content addressing.
+ * This hash is embedded in receipts via policy_identity.hash.
+ */
+export function computePolicyHash(rules: PolicyRules): string {
+  return computeDigest(rules);
 }

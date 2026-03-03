@@ -3,6 +3,7 @@ import { checkHash } from "./hash-check.js";
 import { checkLinks } from "./link-check.js";
 import { checkLint } from "./lint-check.js";
 import { checkReferences } from "./ref-check.js";
+import { checkPolicyIntegrity } from "./policy-check.js";
 import { buildResult, formatResult } from "./report.js";
 import type { VerificationResult } from "./types.js";
 import type { PolicyRules } from "./lint-check.js";
@@ -14,6 +15,7 @@ export { checkLinks } from "./link-check.js";
 export { checkLint } from "./lint-check.js";
 export { checkReferences } from "./ref-check.js";
 export type { RefCheckOptions } from "./ref-check.js";
+export { checkPolicyIntegrity } from "./policy-check.js";
 export { buildResult, formatResult } from "./report.js";
 
 export interface VerifyOptions {
@@ -21,6 +23,8 @@ export interface VerifyOptions {
   strict?: boolean;
   /** Recursively verify referenced receipts. */
   follow?: boolean;
+  /** Strict references: missing or unreadable refs fail verification. */
+  refsStrict?: boolean;
   /** Custom lint rules (from a policy pack). */
   policy?: PolicyRules;
   /** Directory for resolving reference paths. */
@@ -48,10 +52,14 @@ export async function verifyReceipt(
     checks.push(...checkLint(receipt, opts.policy));
   }
 
+  // Policy integrity: always check if receipt has policy_identity
+  checks.push(...checkPolicyIntegrity(receipt, { suppliedRules: opts.policy }));
+
   if (opts.follow || (receipt.references as unknown[])?.length) {
     const refChecks = await checkReferences(receipt, {
       follow: opts.follow,
       receiptsDir: opts.receiptsDir,
+      refsStrict: opts.refsStrict,
     });
     checks.push(...refChecks);
   }

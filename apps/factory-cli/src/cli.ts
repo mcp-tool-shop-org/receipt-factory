@@ -5,7 +5,7 @@ import { VERSION } from "./version.js";
 import { handleMake } from "./commands/make.js";
 import { handleRender } from "./commands/render.js";
 import { handleVerify } from "./commands/verify.js";
-import { handleSign } from "./commands/sign.js";
+import { handleSign, handleSignPolicy } from "./commands/sign.js";
 import { handleInit } from "./commands/init.js";
 import { handleCollect } from "./commands/collect.js";
 import { handleIndex } from "./commands/index-cmd.js";
@@ -54,7 +54,9 @@ program
   .option("--offline", "Skip link reachability checks", false)
   .option("--strict", "Enable lint checks for receipt quality", false)
   .option("--follow", "Recursively verify referenced receipts", false)
+  .option("--refs-strict", "Fail verification on missing or unreadable references", false)
   .option("--policy <path>", "Path to policy.json for lint rules")
+  .option("--require-policy-signature", "Require a signed policy (cosign sidecar)", false)
   .option("--receipts-dir <dir>", "Directory for resolving reference paths")
   .action(handleVerify);
 
@@ -106,6 +108,13 @@ policyCmd
   .description("Scaffold a default policy.json file")
   .option("--output <path>", "Output path (default: policy.json)")
   .action(handlePolicyInit);
+
+policyCmd
+  .command("sign <file>")
+  .description("Sign a policy file with cosign (detached sidecar)")
+  .option("--keyless", "Use keyless signing (OIDC, for CI)", false)
+  .option("--key <path>", "Path to cosign private key")
+  .action(handleSignPolicy);
 
 program
   .command("init")

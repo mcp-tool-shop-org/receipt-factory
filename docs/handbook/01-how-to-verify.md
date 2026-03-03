@@ -74,9 +74,43 @@ rf verify receipts/ci/downstream.json --follow --receipts-dir receipts/
 
 This resolves each reference in the receipt, verifies the referenced file exists, and confirms its hash matches. With `--strict --follow`, lint checks also run on the root receipt.
 
-**Follow is best-effort.** If a referenced file is missing or a URL is unreachable, that reference fails — but the rest of the receipt's checks still run. A missing reference does not invalidate the receipt's own integrity. This is intentional: receipts travel across systems, and not every recipient has access to every ancestor.
+**Follow is best-effort by default.** If a referenced file is missing or a URL is unreachable, that reference is reported but does not fail verification. A missing reference does not invalidate the receipt's own integrity. This is intentional: receipts travel across systems, and not every recipient has access to every ancestor.
+
+For strict provenance enforcement, use `--refs-strict`:
+
+```bash
+rf verify receipts/ci/downstream.json --follow --refs-strict --receipts-dir receipts/
+```
+
+In strict mode, missing or unreadable references fail verification. Hash mismatches always fail regardless of mode.
 
 Traversal is bounded: max depth of 5 levels, max 200 nodes. Cycles are detected and reported cleanly.
+
+## Policy governance
+
+Receipts can embed a policy identity — the hash of the lint policy applied at creation time. This lets you verify that a receipt was linted under a specific policy, not a swapped one.
+
+```bash
+# Create a policy
+rf policy init --output policy.json
+
+# Verify with policy hash checking
+rf verify receipt.json --strict --policy policy.json
+```
+
+If the receipt contains a `policy_identity.hash` and the supplied policy has a different hash, verification fails.
+
+### Signing policies
+
+For orgs that need auditable policy provenance:
+
+```bash
+# Sign the policy (detached sidecar: policy.json.sig)
+rf policy sign policy.json --keyless
+
+# Verify receipt, requiring a signed policy
+rf verify receipt.json --strict --policy policy.json --require-policy-signature
+```
 
 ## Viewing the reference graph
 

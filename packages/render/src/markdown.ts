@@ -81,6 +81,14 @@ export function renderMarkdown(receipt: Receipt): string {
     lines.push("");
   }
 
+  // Policy identity (if present)
+  if (receipt.policy_identity?.hash) {
+    const truncHash = receipt.policy_identity.hash.slice(0, 16);
+    const signed = receipt.policy_identity.signed ? " (signed)" : "";
+    lines.push(`**Lint policy:** \`${truncHash}…\`${signed}`);
+    lines.push("");
+  }
+
   // What this does NOT prove
   lines.push("## What this does NOT prove");
   lines.push("");
@@ -121,9 +129,21 @@ export function renderMarkdown(receipt: Receipt): string {
   lines.push("");
 
   // Policy
-  if (receipt.policy.redacted_fields.length > 0 || receipt.policy.required_checks.length > 0) {
+  const hasPolicy = receipt.policy.redacted_fields.length > 0 ||
+    receipt.policy.required_checks.length > 0 ||
+    receipt.policy_identity?.hash;
+  if (hasPolicy) {
     lines.push("### Policy");
     lines.push("");
+    if (receipt.policy_identity?.hash) {
+      lines.push(`- **Policy hash:** \`${receipt.policy_identity.hash}\``);
+      if (receipt.policy_identity.version) {
+        lines.push(`- **Policy version:** ${receipt.policy_identity.version}`);
+      }
+      if (receipt.policy_identity.signed) {
+        lines.push(`- **Signed:** yes`);
+      }
+    }
     if (receipt.policy.redacted_fields.length > 0) {
       lines.push(`- **Redacted:** ${receipt.policy.redacted_fields.join(", ")}`);
     }

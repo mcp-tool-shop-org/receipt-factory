@@ -71,6 +71,65 @@ export async function signReceipt(
   return signResult;
 }
 
+/**
+ * Sign a policy JSON file.
+ *
+ * Produces detached sidecar files: policy.json.sig (and policy.json.cert for keyless).
+ * The policy file itself is never modified — the hash in receipts refers to the
+ * policy content, so mutation would break verification.
+ */
+export async function signPolicy(
+  policyPath: string,
+  opts: Omit<SignOptions, "embed"> = {},
+): Promise<SignResult> {
+  const available = await isCosignAvailable();
+  if (!available) {
+    throw new RfError({
+      code: "RF_COSIGN_MISSING",
+      message: "cosign is not installed or not in PATH",
+      hint: "Install cosign: https://docs.sigstore.dev/cosign/system_config/installation/",
+    });
+  }
+
+  // Read policy to compute its digest for the result
+  const raw = readFileSync(policyPath, "utf-8");
+  let parsed: Record<string, unknown>;
+  try {
+    parsed = JSON.parse(raw) as Record<string, unknown>;
+  } catch {
+    throw new RfError({
+      code: "RF_SIGN_INVALID",
+      message: `Policy file is not valid JSON: ${policyPath}`,
+      hint: "Use 'rf policy init' to create a valid policy file",
+    });
+  }
+
+  const digest = computeDigest(parsed);
+
+  const sigPath = `${policyPath}.sig`;
+  const certPath = `${policyPath}.cert`;
+
+  const result = await signBlob(policyPath, {
+    keyless: opts.keyless,
+    keyPath: opts.keyPath,
+    outputSignature: sigPath,
+    outputCertificate: opts.keyless ? certPath : undefined,
+  });
+
+  const signedAt = new Date().toISOString();
+
+  return {
+    digest,
+    signature: result.signature || readSafe(sigPath),
+    certificate: result.certificate || readSafe(certPath),
+    signedAt,
+    sidecarPaths: {
+      signature: sigPath,
+      certificate: opts.keyless ? certPath : undefined,
+    },
+  };
+}
+
 function readSafe(path: string): string {
   try {
     return readFileSync(path, "utf-8").trim();

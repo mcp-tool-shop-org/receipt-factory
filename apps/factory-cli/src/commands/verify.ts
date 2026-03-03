@@ -1,13 +1,16 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { verifyReceipt, formatResult } from "@mcptoolshop/rf-verify";
 import { loadPolicy } from "@mcptoolshop/rf-policy";
+import { verifyBlob } from "@mcptoolshop/rf-sign";
 
 export interface VerifyOptions {
   offline: boolean;
   strict: boolean;
   follow?: boolean;
+  refsStrict?: boolean;
   policy?: string;
+  requirePolicySignature?: boolean;
   receiptsDir?: string;
 }
 
@@ -21,6 +24,32 @@ export async function handleVerify(file: string, opts: VerifyOptions): Promise<v
       ? loadPolicy(opts.policy).rules
       : undefined;
 
+    // Verify policy signature if required
+    if (opts.requirePolicySignature) {
+      if (!opts.policy) {
+        console.error("[RF_VERIFY] --require-policy-signature requires --policy <path>");
+        process.exit(1);
+        return;
+      }
+
+      const sigPath = `${opts.policy}.sig`;
+      if (!existsSync(sigPath)) {
+        console.error(`[RF_VERIFY] Policy signature not found: ${sigPath}`);
+        console.error("  Sign the policy with: rf policy sign policy.json --keyless");
+        process.exit(3);
+        return;
+      }
+
+      const sigValid = await verifyBlob(opts.policy, { signaturePath: sigPath });
+      if (!sigValid) {
+        console.error("[RF_VERIFY] Policy signature verification failed");
+        process.exit(3);
+        return;
+      }
+
+      console.log("✓ Policy signature verified");
+    }
+
     // Default receiptsDir to the parent of the receipt file
     const receiptsDir = opts.receiptsDir ?? dirname(file);
 
@@ -28,6 +57,7 @@ export async function handleVerify(file: string, opts: VerifyOptions): Promise<v
       offline: opts.offline,
       strict: opts.strict,
       follow: opts.follow,
+      refsStrict: opts.refsStrict,
       policy: policyRules,
       receiptsDir,
     });

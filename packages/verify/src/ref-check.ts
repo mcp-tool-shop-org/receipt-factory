@@ -20,6 +20,8 @@ export interface RefCheckOptions {
   maxDepth?: number;
   /** Maximum total nodes visited to prevent graph explosion (default: 200). */
   maxNodes?: number;
+  /** Strict references: missing or unreadable references fail verification (default: false). */
+  refsStrict?: boolean;
 }
 
 /**
@@ -47,10 +49,11 @@ export async function checkReferences(
   const visited = new Set<string>();
   const maxDepth = opts.maxDepth ?? 5;
   const maxNodes = opts.maxNodes ?? 200;
+  const refsStrict = opts.refsStrict ?? false;
   const state = { nodesVisited: 0, maxNodes };
 
   for (const ref of references) {
-    const refChecks = await verifyReference(ref, opts, visited, 0, maxDepth, state);
+    const refChecks = await verifyReference(ref, opts, visited, 0, maxDepth, state, refsStrict);
     checks.push(...refChecks);
   }
 
@@ -69,6 +72,7 @@ async function verifyReference(
   depth: number,
   maxDepth: number,
   state: TraversalState,
+  refsStrict: boolean,
 ): Promise<VerificationCheck[]> {
   const checks: VerificationCheck[] = [];
   const label = `ref:${ref.kind}:${ref.hash.slice(0, 12)}`;
@@ -105,7 +109,7 @@ async function verifyReference(
     } catch {
       checks.push({
         name: label,
-        passed: false,
+        passed: !refsStrict,
         message: `Referenced file not found: ${ref.path}`,
         details: { path: ref.path, description: ref.description },
       });
@@ -118,7 +122,7 @@ async function verifyReference(
     } catch {
       checks.push({
         name: label,
-        passed: false,
+        passed: !refsStrict,
         message: `Referenced file is not valid JSON: ${ref.path}`,
         details: { path: ref.path },
       });
@@ -173,6 +177,7 @@ async function verifyReference(
               depth + 1,
               maxDepth,
               state,
+              refsStrict,
             );
             checks.push(...subChecks);
           }
@@ -200,7 +205,7 @@ async function verifyReference(
       if (resp.status >= 400) {
         checks.push({
           name: label,
-          passed: false,
+          passed: !refsStrict,
           message: `Referenced URL unreachable (HTTP ${resp.status}): ${ref.url}`,
           details: { url: ref.url, description: ref.description },
         });
@@ -214,7 +219,7 @@ async function verifyReference(
     } catch (err) {
       checks.push({
         name: label,
-        passed: false,
+        passed: !refsStrict,
         message: `Referenced URL unreachable: ${ref.url}`,
         details: {
           url: ref.url,

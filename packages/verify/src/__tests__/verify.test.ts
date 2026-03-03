@@ -1,9 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { ReceiptBuilder } from "@mcptoolshop/rf-core";
+import { ReceiptBuilder, computeDigest } from "@mcptoolshop/rf-core";
 import { checkSchema } from "../schema-check.js";
 import { checkHash } from "../hash-check.js";
 import { checkLinks } from "../link-check.js";
 import { checkLint } from "../lint-check.js";
+import { checkPolicyIntegrity } from "../policy-check.js";
 import { verifyReceipt } from "../index.js";
 
 function makeReceipt() {
@@ -238,5 +239,93 @@ describe("checkLint", () => {
     expect(refCheck).toBeDefined();
     expect(refCheck?.passed).toBe(false);
     expect(refCheck?.message).toContain("No references");
+  });
+});
+
+describe("checkPolicyIntegrity", () => {
+  const POLICY_A = {
+    intent_min_length: 10,
+    require_verification_steps: true,
+    min_verification_steps: 1,
+    require_verification_commands: true,
+    min_verification_commands: 1,
+    require_evidence: true,
+    min_evidence: 1,
+    require_context: true,
+    require_subject_url: true,
+    require_required_checks: true,
+    require_references: false,
+  };
+
+  const POLICY_B = {
+    ...POLICY_A,
+    intent_min_length: 50,
+  };
+
+  function makeReceiptWithPolicyHash(policyHash: string) {
+    return new ReceiptBuilder("ci_run")
+      .subject({
+        type: "repository",
+        name: "test-repo",
+        ref: "abc123",
+        url: "https://github.com/org/repo",
+      })
+      .intent("Verify that all tests pass and artifacts build correctly")
+      .createdAt("2026-03-03T12:00:00.000Z")
+      .addOutput({ name: "results.xml", digest: "sha256:abc" })
+      .addEvidence({
+        type: "workflow_run",
+        url: "https://github.com/org/repo/actions/runs/123",
+        description: "CI run",
+      })
+      .addStep("Run rf verify")
+      .addCommand("rf verify receipt.json")
+      .environment({
+        runner: "ubuntu-latest",
+        tool_versions: { node: "20.11.0" },
+      })
+      .policy({
+        redacted_fields: [],
+        required_checks: ["schema", "hash"],
+      })
+      .policyIdentity({ hash: policyHash })
+      .build() as unknown as Record<string, unknown>;
+  }
+
+  it("skips when receipt has no policy_identity", () => {
+    const receipt = makeReceipt() as unknown as Record<string, unknown>;
+    const checks = checkPolicyIntegrity(receipt);
+    expect(checks).toHaveLength(0);
+  });
+
+  it("reports info when receipt has policy hash but no policy supplied", () => {
+    const hash = computeDigest(POLICY_A);
+    const receipt = makeReceiptWithPolicyHash(hash);
+    const checks = checkPolicyIntegrity(receipt);
+    expect(checks).toHaveLength(1);
+    expect(checks[0].passed).toBe(true);
+    expect(checks[0].name).toBe("policy:identity");
+    expect(checks[0].message).toContain("no --policy supplied");
+  });
+
+  it("passes when supplied policy matches receipt policy hash", () => {
+    const hash = computeDigest(POLICY_A);
+    const receipt = makeReceiptWithPolicyHash(hash);
+    const checks = checkPolicyIntegrity(receipt, { suppliedRules: POLICY_A });
+    expect(checks).toHaveLength(1);
+    expect(checks[0].passed).toBe(true);
+    expect(checks[0].name).toBe("policy:integrity");
+    expect(checks[0].message).toContain("verified");
+  });
+
+  it("fails when supplied policy does not match receipt policy hash", () => {
+    const hashA = computeDigest(POLICY_A);
+    const receipt = makeReceiptWithPolicyHash(hashA);
+    // Supply a different policy
+    const checks = checkPolicyIntegrity(receipt, { suppliedRules: POLICY_B });
+    expect(checks).toHaveLength(1);
+    expect(checks[0].passed).toBe(false);
+    expect(checks[0].name).toBe("policy:integrity");
+    expect(checks[0].message).toContain("mismatch");
   });
 });

@@ -10,6 +10,7 @@ export type {
   ReceiptVerification,
   ReceiptEnvironment,
   ReceiptPolicy,
+  PolicyIdentity,
   ReceiptIntegrity,
 } from "./types.js";
 
@@ -25,6 +26,7 @@ export {
   receiptPolicySchema,
   receiptIntegritySchema,
   receiptReferenceSchema,
+  policyIdentitySchema,
   validateReceipt,
   safeValidateReceipt,
 } from "./schema.js";

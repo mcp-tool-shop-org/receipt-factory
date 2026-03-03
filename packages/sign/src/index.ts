@@ -5,5 +5,5 @@ export type {
 } from "./types.js";
 
 export { isCosignAvailable, signBlob, verifyBlob } from "./cosign.js";
-export { signReceipt } from "./sign.js";
+export { signReceipt, signPolicy } from "./sign.js";
 export { verifySignature } from "./verify-signature.js";

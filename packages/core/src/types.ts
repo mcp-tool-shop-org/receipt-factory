@@ -77,6 +77,19 @@ export interface ReceiptIntegrity {
 }
 
 /**
+ * Policy identity — records which lint policy was applied at creation time.
+ * The hash is the SHA-256 of the canonical JSON policy rules, enabling
+ * verification that the same policy was used at lint and verify time.
+ */
+export interface PolicyIdentity {
+  hash: string;
+  version?: string;
+  path?: string;
+  signed?: boolean;
+  signatureRef?: string;
+}
+
+/**
  * A reference from one receipt to another receipt or evidence pack.
  * Forms the edges of a verifiable provenance graph.
  */
@@ -107,6 +120,7 @@ export interface Receipt {
   environment: ReceiptEnvironment;
   policy: ReceiptPolicy;
   integrity: ReceiptIntegrity;
+  policy_identity?: PolicyIdentity;
   metadata?: Record<string, unknown>;
   references?: ReceiptReference[];
 }
