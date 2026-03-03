@@ -1,5 +1,7 @@
 packages:
-  - "packages/*"
-  - "packages/adapters/*"
-  - "pipelines/*"
-  - "apps/*"
+  - packages/*
+  - packages/adapters/*
+  - pipelines/*
+  - apps/*
+
+onlyBuiltDependencies: esbuild
