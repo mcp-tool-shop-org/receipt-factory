@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/rf-policy",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Policy packs — portable, versioned lint configuration for receipts",
   "type": "module",
   "main": "dist/index.js",

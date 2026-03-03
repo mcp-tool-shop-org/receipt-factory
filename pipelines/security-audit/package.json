@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/rf-pipeline-security-audit",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "private": true,
   "description": "Security audit pipeline — prove what you scanned and what was found",
   "type": "module",

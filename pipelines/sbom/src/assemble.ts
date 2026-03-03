@@ -81,7 +81,7 @@ export function assemble(evidence: SbomEvidence): Receipt {
   });
 
   // Metadata
-  builder.meta("factory_version", "1.7.1");
+  builder.meta("factory_version", "1.7.2");
   builder.meta("pipeline", "sbom");
   builder.meta("sbom_format", format);
   builder.meta("sbom_spec_version", spec_version);

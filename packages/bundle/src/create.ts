@@ -10,7 +10,7 @@ import type {
   CreateBundleResult,
 } from "./types.js";
 
-const FACTORY_VERSION = "1.7.1";
+const FACTORY_VERSION = "1.7.2";
 
 interface Reference {
   kind: "receipt" | "evidence_pack";

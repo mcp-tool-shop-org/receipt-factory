@@ -78,7 +78,7 @@ export function assemble(evidence: SecurityAuditEvidence): Receipt {
   });
 
   // Metadata
-  builder.meta("factory_version", "1.7.1");
+  builder.meta("factory_version", "1.7.2");
   builder.meta("pipeline", "security-audit");
   builder.meta("findings_total", summary.total);
   builder.meta("findings_critical", summary.critical);

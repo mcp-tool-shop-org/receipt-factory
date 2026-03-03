@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/rf-pipeline-sbom",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "private": true,
   "description": "SBOM pipeline — attest to a software bill of materials",
   "type": "module",
