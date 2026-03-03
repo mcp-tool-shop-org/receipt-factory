@@ -58,7 +58,11 @@ export function renderMarkdown(receipt: Receipt): string {
     lines.push("## Evidence");
     lines.push("");
     for (const ev of receipt.evidence) {
-      lines.push(`- **${ev.type}**: [${ev.description}](${ev.url})`);
+      if (ev.url) {
+        lines.push(`- **${ev.type}**: [${ev.description}](${ev.url})`);
+      } else {
+        lines.push(`- **${ev.type}**: ${ev.description}`);
+      }
     }
     lines.push("");
   }

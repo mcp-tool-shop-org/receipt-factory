@@ -6,6 +6,7 @@ export type ReceiptKind =
   | "release"
   | "registry_sync"
   | "audit"
+  | "sbom"
   | "delivery";
 
 /**
@@ -33,7 +34,7 @@ export interface ReceiptOutput {
  */
 export interface ReceiptEvidence {
   type: string;
-  url: string;
+  url?: string;
   description: string;
 }
 

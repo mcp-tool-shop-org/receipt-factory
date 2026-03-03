@@ -115,7 +115,11 @@ function renderEvidence(r: Receipt): string {
   if (r.evidence.length === 0) return "";
   const lines: string[] = ["  <h2>Evidence</h2>", "  <ul>"];
   for (const ev of r.evidence) {
-    lines.push(`    <li><strong>${escHtml(ev.type)}:</strong> <a href="${escHtml(ev.url)}">${escHtml(ev.description)}</a></li>`);
+    if (ev.url) {
+      lines.push(`    <li><strong>${escHtml(ev.type)}:</strong> <a href="${escHtml(ev.url)}">${escHtml(ev.description)}</a></li>`);
+    } else {
+      lines.push(`    <li><strong>${escHtml(ev.type)}:</strong> ${escHtml(ev.description)}</li>`);
+    }
   }
   lines.push("  </ul>", "");
   return lines.join("\n");

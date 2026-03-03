@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/rf-sign",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Receipt signing via cosign — keyless in CI, key-based for dev",
   "type": "module",
   "main": "dist/index.js",

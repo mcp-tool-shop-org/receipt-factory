@@ -16,7 +16,7 @@ function run(...args: string[]): string {
 describe("rf CLI", () => {
   it("shows version", () => {
     const output = run("--version");
-    expect(output.trim()).toBe("1.6.0");
+    expect(output.trim()).toBe("1.7.0");
   });
 
   it("shows help", () => {

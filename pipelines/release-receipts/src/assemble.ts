@@ -78,7 +78,7 @@ export function assemble(evidence: GitHubReleaseEvidence): Receipt {
   });
 
   // What this receipt does NOT prove
-  builder.meta("factory_version", "1.6.0");
+  builder.meta("factory_version", "1.7.0");
   builder.meta("pipeline", "release-receipts");
   builder.meta("assets_count", assets.length);
   if (release.body) {

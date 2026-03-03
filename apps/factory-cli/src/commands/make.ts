@@ -2,11 +2,17 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { runCIPipeline, assemble as assembleCi } from "@mcptoolshop/rf-pipeline-ci";
 import { runReleasePipeline, assemble as assembleRelease } from "@mcptoolshop/rf-pipeline-release";
+import { assemble as assembleRegistrySync } from "@mcptoolshop/rf-pipeline-registry-sync";
+import { assemble as assembleSecurityAudit } from "@mcptoolshop/rf-pipeline-security-audit";
+import { assemble as assembleSbom } from "@mcptoolshop/rf-pipeline-sbom";
 import { RfError, canonicalize } from "@mcptoolshop/rf-core";
 import { renderMarkdown, renderHtml } from "@mcptoolshop/rf-render";
 import { readEvidencePack } from "@mcptoolshop/rf-evidence";
 import type { GitHubCIEvidence } from "@mcptoolshop/rf-adapter-github";
 import type { GitHubReleaseEvidence } from "@mcptoolshop/rf-adapter-github";
+import type { RegistrySyncEvidence } from "@mcptoolshop/rf-pipeline-registry-sync";
+import type { SecurityAuditEvidence } from "@mcptoolshop/rf-pipeline-security-audit";
+import type { SbomEvidence } from "@mcptoolshop/rf-pipeline-sbom";
 
 export interface MakeOptions {
   from: string;
@@ -48,8 +54,12 @@ export async function handleMake(kind: string, opts: MakeOptions): Promise<void>
       console.log(`  JSON: ${result.files.json}`);
       console.log(`  MD:   ${result.files.md}`);
       console.log(`  HTML: ${result.files.html}`);
+    } else if (kind === "registry-sync" || kind === "security-audit" || kind === "sbom") {
+      // Supply chain kinds are evidence-only (no live API source yet)
+      console.error(`"${kind}" receipts require --from evidence. Use: rf collect ${kind} ... first, then rf make ${kind} --from evidence --pack <dir>`);
+      process.exit(1);
     } else {
-      console.error(`Unknown receipt kind: ${kind}. Supported: ci, release`);
+      console.error(`Unknown receipt kind: ${kind}. Supported: ci, release, registry-sync, security-audit, sbom`);
       process.exit(1);
     }
   } catch (err) {
@@ -69,8 +79,15 @@ async function handleMakeFromEvidence(kind: string, opts: MakeOptions): Promise<
 
   const { manifest, data } = readEvidencePack(opts.pack);
 
-  // Verify kind matches
-  const expectedKind = kind === "ci" ? "ci_run" : kind;
+  // Map CLI kind names to evidence pack kind values
+  const kindMap: Record<string, string> = {
+    ci: "ci_run",
+    release: "release",
+    "registry-sync": "registry_sync",
+    "security-audit": "audit",
+    sbom: "sbom",
+  };
+  const expectedKind = kindMap[kind] ?? kind;
   if (manifest.kind !== expectedKind) {
     console.error(
       `Evidence pack kind "${manifest.kind}" does not match requested kind "${kind}"`,
@@ -83,8 +100,14 @@ async function handleMakeFromEvidence(kind: string, opts: MakeOptions): Promise<
     receipt = assembleCi(data as GitHubCIEvidence);
   } else if (kind === "release") {
     receipt = assembleRelease(data as GitHubReleaseEvidence);
+  } else if (kind === "registry-sync") {
+    receipt = assembleRegistrySync(data as RegistrySyncEvidence);
+  } else if (kind === "security-audit") {
+    receipt = assembleSecurityAudit(data as SecurityAuditEvidence);
+  } else if (kind === "sbom") {
+    receipt = assembleSbom(data as SbomEvidence);
   } else {
-    console.error(`Unknown receipt kind: ${kind}. Supported: ci, release`);
+    console.error(`Unknown receipt kind: ${kind}. Supported: ci, release, registry-sync, security-audit, sbom`);
     process.exit(1);
     return;
   }
@@ -99,7 +122,9 @@ async function handleMakeFromEvidence(kind: string, opts: MakeOptions): Promise<
   const date = receipt.created_at.split("T")[0];
   const slug = kind === "ci"
     ? String((data as GitHubCIEvidence).run.id)
-    : (data as GitHubReleaseEvidence).release.tag_name;
+    : kind === "release"
+      ? (data as GitHubReleaseEvidence).release.tag_name
+      : receipt.id.slice(0, 12);
   const dir = join(outputDir, kind, date);
   mkdirSync(dir, { recursive: true });
 

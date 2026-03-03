@@ -69,7 +69,7 @@ describe("receipt bundles", () => {
     expect(result.zipPath).toBe(outputPath);
     expect(result.manifest.bundle_version).toBe("1.0");
     expect(result.manifest.root_receipt).toBe("receipts/root.json");
-    expect(result.manifest.factory_version).toBe("1.6.0");
+    expect(result.manifest.factory_version).toBe("1.7.0");
     expect(result.manifest.contents.receipts).toContain("receipts/root.json");
     expect(result.hashes.algorithm).toBe("sha256");
     expect(result.hashes.files["receipts/root.json"]).toBeDefined();
@@ -170,7 +170,7 @@ describe("receipt bundles", () => {
 
     expect(manifest.bundle_version).toBe("1.0");
     expect(manifest.root_receipt).toBe("receipts/root.json");
-    expect(manifest.factory_version).toBe("1.6.0");
+    expect(manifest.factory_version).toBe("1.7.0");
     expect(manifest.contents.receipts).toContain("receipts/root.json");
     expect(manifest.created_at).toBeDefined();
   });

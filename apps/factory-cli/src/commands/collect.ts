@@ -42,8 +42,14 @@ export async function handleCollect(kind: string, opts: CollectOptions): Promise
       console.log(`  Kind: ${manifest.kind}`);
       console.log(`  Source: ${manifest.source}`);
       console.log(`  Files: ${Object.keys(manifest.files).length}`);
+    } else if (kind === "registry-sync" || kind === "security-audit" || kind === "sbom") {
+      console.error(
+        `"${kind}" collection is not yet automated. Write evidence JSON manually, then:\n` +
+        `  rf make ${kind} --from evidence --pack <dir>`,
+      );
+      process.exit(1);
     } else {
-      console.error(`Unknown kind: ${kind}. Supported: ci, release`);
+      console.error(`Unknown kind: ${kind}. Supported: ci, release, registry-sync, security-audit, sbom`);
       process.exit(1);
     }
   } catch (err) {

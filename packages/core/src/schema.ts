@@ -5,6 +5,7 @@ export const receiptKindSchema = z.enum([
   "release",
   "registry_sync",
   "audit",
+  "sbom",
   "delivery",
 ]);
 
@@ -24,7 +25,7 @@ export const receiptOutputSchema = z.object({
 
 export const receiptEvidenceSchema = z.object({
   type: z.string().min(1),
-  url: z.string().url(),
+  url: z.string().url().optional(),
   description: z.string().min(1),
 });
 

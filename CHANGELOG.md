@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-03-03
+
+### Added
+
+- **Three supply chain receipt pipelines** — new receipt kinds for security teams and executives:
+  - **`registry-sync`** (`@mcptoolshop/rf-pipeline-registry-sync`): Prove what's published vs what's in the repo
+    - Drift classification: in sync, ahead, behind, unpublished
+    - Each package becomes a receipt output with version comparison
+  - **`security-audit`** (`@mcptoolshop/rf-pipeline-security-audit`): Prove what you scanned, with what tool, and what was found
+    - Severity breakdown (critical/high/moderate/low/info) in intent and metadata
+    - Each finding becomes a receipt output with advisory details
+    - Lockfile snapshot evidence for dependency graph provenance
+  - **`sbom`** (`@mcptoolshop/rf-pipeline-sbom`): Produce and attest to a software bill of materials
+    - Supports CycloneDX and SPDX formats
+    - SBOM file as primary output with SHA-256 digest and size
+    - Generator tool recorded in environment
+- **`rf make <kind> --from evidence`**: All three new kinds support evidence-based assembly
+  - `rf make registry-sync --from evidence --pack <dir>`
+  - `rf make security-audit --from evidence --pack <dir>`
+  - `rf make sbom --from evidence --pack <dir>`
+- **`sbom`** added to `ReceiptKind` enum (`registry_sync` and `audit` were already present)
+
+### Changed
+
+- `ReceiptEvidence.url` is now optional — supply chain evidence (lockfile snapshots, local scans) doesn't always have a URL
+- Markdown and HTML renderers handle URL-less evidence gracefully (plain text instead of broken links)
+- CLI `make` and `collect` help text lists all five kinds
+- CLI `search --kind` filter lists all five receipt kinds
+- 169 tests across 15 packages (up from 152/13)
+
 ## [1.6.0] - 2026-03-03
 
 ### Added

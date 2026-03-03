@@ -35,9 +35,18 @@ importers:
       '@mcptoolshop/rf-pipeline-ci':
         specifier: workspace:*
         version: link:../../pipelines/ci-receipts
+      '@mcptoolshop/rf-pipeline-registry-sync':
+        specifier: workspace:*
+        version: link:../../pipelines/registry-sync
       '@mcptoolshop/rf-pipeline-release':
         specifier: workspace:*
         version: link:../../pipelines/release-receipts
+      '@mcptoolshop/rf-pipeline-sbom':
+        specifier: workspace:*
+        version: link:../../pipelines/sbom
+      '@mcptoolshop/rf-pipeline-security-audit':
+        specifier: workspace:*
+        version: link:../../pipelines/security-audit
       '@mcptoolshop/rf-policy':
         specifier: workspace:*
         version: link:../../packages/policy
@@ -245,6 +254,22 @@ importers:
         specifier: ^3.0.0
         version: 3.2.4(@types/node@22.19.13)
 
+  pipelines/registry-sync:
+    dependencies:
+      '@mcptoolshop/rf-core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.13
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/node@22.19.13)
+
   pipelines/release-receipts:
     dependencies:
       '@mcptoolshop/rf-adapter-github':
@@ -256,6 +281,38 @@ importers:
       '@mcptoolshop/rf-render':
         specifier: workspace:*
         version: link:../../packages/render
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.13
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/node@22.19.13)
+
+  pipelines/sbom:
+    dependencies:
+      '@mcptoolshop/rf-core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.13
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/node@22.19.13)
+
+  pipelines/security-audit:
+    dependencies:
+      '@mcptoolshop/rf-core':
+        specifier: workspace:*
+        version: link:../../packages/core
     devDependencies:
       '@types/node':
         specifier: ^22.0.0

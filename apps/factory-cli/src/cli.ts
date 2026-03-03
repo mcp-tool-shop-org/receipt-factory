@@ -28,7 +28,7 @@ program
 
 program
   .command("make <kind>")
-  .description("Create a receipt (kinds: ci, release)")
+  .description("Create a receipt (kinds: ci, release, registry-sync, security-audit, sbom)")
   .requiredOption("--from <source>", "Data source (supported: github, evidence)")
   .option("--run <id>", "Run ID (defaults to GITHUB_RUN_ID in CI)")
   .option("--repo <owner/name>", "Repository (defaults to GITHUB_REPOSITORY)")
@@ -39,7 +39,7 @@ program
 
 program
   .command("collect <kind>")
-  .description("Collect evidence into a portable pack (kinds: ci, release)")
+  .description("Collect evidence into a portable pack (kinds: ci, release, registry-sync, security-audit, sbom)")
   .requiredOption("--from <source>", "Data source (supported: github)")
   .option("--run <id>", "Run ID (defaults to GITHUB_RUN_ID in CI)")
   .option("--repo <owner/name>", "Repository (defaults to GITHUB_REPOSITORY)")
@@ -94,7 +94,7 @@ program
 program
   .command("search")
   .description("Search the receipt index")
-  .option("--kind <kind>", "Filter by receipt kind (ci_run, release)")
+  .option("--kind <kind>", "Filter by receipt kind (ci_run, release, registry_sync, audit, sbom)")
   .option("--repo <name>", "Filter by repository name (partial match)")
   .option("--since <date>", "Filter receipts created after this date")
   .option("--until <date>", "Filter receipts created before this date")
