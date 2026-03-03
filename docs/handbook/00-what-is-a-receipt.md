@@ -24,6 +24,10 @@ Every receipt has two layers:
 
 Every receipt has an `id` that's the SHA-256 hash of its canonical JSON representation. Change one byte of the receipt, and the hash changes. This makes receipts tamper-evident without requiring a central authority.
 
+## References
+
+Receipts can reference other receipts and evidence packs by hash. A release receipt can cite the CI receipt that proved tests passed. A delivery receipt can cite the release receipt that produced the artifacts. This forms a verifiable provenance graph — each link is content-addressed and independently verifiable.
+
 ## What receipts are NOT
 
 - **Not a guarantee of quality.** A receipt proves a CI run happened. It doesn't prove the code is correct.

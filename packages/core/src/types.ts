@@ -77,6 +77,18 @@ export interface ReceiptIntegrity {
 }
 
 /**
+ * A reference from one receipt to another receipt or evidence pack.
+ * Forms the edges of a verifiable provenance graph.
+ */
+export interface ReceiptReference {
+  kind: "receipt" | "evidence_pack";
+  hash: string;
+  description: string;
+  path?: string;
+  url?: string;
+}
+
+/**
  * A receipt — a signed, timestamped, reproducible record of what happened.
  *
  * Human on the surface, ruthless on the backend.
@@ -96,6 +108,7 @@ export interface Receipt {
   policy: ReceiptPolicy;
   integrity: ReceiptIntegrity;
   metadata?: Record<string, unknown>;
+  references?: ReceiptReference[];
 }
 
 /**

@@ -23,12 +23,21 @@ importers:
       '@mcptoolshop/rf-core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@mcptoolshop/rf-evidence':
+        specifier: workspace:*
+        version: link:../../packages/evidence
+      '@mcptoolshop/rf-index':
+        specifier: workspace:*
+        version: link:../../packages/index
       '@mcptoolshop/rf-pipeline-ci':
         specifier: workspace:*
         version: link:../../pipelines/ci-receipts
       '@mcptoolshop/rf-pipeline-release':
         specifier: workspace:*
         version: link:../../pipelines/release-receipts
+      '@mcptoolshop/rf-policy':
+        specifier: workspace:*
+        version: link:../../packages/policy
       '@mcptoolshop/rf-render':
         specifier: workspace:*
         version: link:../../packages/render
@@ -73,6 +82,57 @@ importers:
       zod:
         specifier: ^3.24.0
         version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.13
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/node@22.19.13)
+
+  packages/evidence:
+    dependencies:
+      '@mcptoolshop/rf-core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.13
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/node@22.19.13)
+
+  packages/index:
+    dependencies:
+      '@mcptoolshop/rf-core':
+        specifier: workspace:*
+        version: link:../core
+      '@mcptoolshop/rf-verify':
+        specifier: workspace:*
+        version: link:../verify
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.13
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.4(@types/node@22.19.13)
+
+  packages/policy:
+    dependencies:
+      '@mcptoolshop/rf-core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@types/node':
         specifier: ^22.0.0

@@ -48,6 +48,44 @@ Every URL in the receipt (subject, outputs, evidence) gets an HTTP HEAD request.
 
 Link failures don't necessarily mean the receipt is invalid — URLs can expire (artifact retention, repo deletions). But they reduce the receipt's provenance strength.
 
+## Strict mode (lint checks)
+
+```bash
+rf verify receipts/ci/2026-03-03/12345.json --strict
+```
+
+Strict mode runs lint checks on human-surface fields: intent quality, evidence, verification steps, subject URL, and policy declarations. Use this in CI to enforce receipt quality standards.
+
+You can supply a custom policy file to override the default lint rules:
+
+```bash
+rf verify receipts/ci/2026-03-03/12345.json --strict --policy policy.json
+```
+
+See `rf policy init` to scaffold a default policy file.
+
+## Following references
+
+Receipts can reference other receipts by hash, forming a provenance graph. Use `--follow` to verify the chain:
+
+```bash
+rf verify receipts/ci/downstream.json --follow --receipts-dir receipts/
+```
+
+This resolves each reference in the receipt, verifies the referenced file exists, and confirms its hash matches. With `--strict --follow`, lint checks also run on the root receipt.
+
+**Follow is best-effort.** If a referenced file is missing or a URL is unreachable, that reference fails — but the rest of the receipt's checks still run. A missing reference does not invalidate the receipt's own integrity. This is intentional: receipts travel across systems, and not every recipient has access to every ancestor.
+
+Traversal is bounded: max depth of 5 levels, max 200 nodes. Cycles are detected and reported cleanly.
+
+## Viewing the reference graph
+
+```bash
+rf graph receipts/
+```
+
+Outputs a JSON graph of receipt-to-receipt references: nodes (receipt IDs, kinds, subjects) and edges (references with descriptions). Useful for visualizing the provenance chain.
+
 ## Exit codes
 
 | Code | Meaning |

@@ -61,6 +61,12 @@ export function assemble(evidence: MyEvidence): Receipt {
     .addEvidence({ type: "...", url: "...", description: "..." })
     .addStep("How to verify this")
     .addCommand("rf verify ...")
+    .addReference({
+      kind: "receipt",
+      hash: upstreamHash,
+      description: "CI receipt proving tests passed",
+      path: "ci/upstream.json",
+    })
     .build();
 }
 ```

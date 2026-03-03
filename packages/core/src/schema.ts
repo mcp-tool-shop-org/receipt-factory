@@ -55,6 +55,14 @@ export const receiptIntegritySchema = z.object({
   rekor_log_id: z.string().optional(),
 });
 
+export const receiptReferenceSchema = z.object({
+  kind: z.enum(["receipt", "evidence_pack"]),
+  hash: z.string().min(1),
+  description: z.string().min(1),
+  path: z.string().optional(),
+  url: z.string().url().optional(),
+});
+
 export const receiptSchema = z.object({
   receipt_version: z.literal("1.0.0"),
   kind: receiptKindSchema,
@@ -70,6 +78,7 @@ export const receiptSchema = z.object({
   policy: receiptPolicySchema,
   integrity: receiptIntegritySchema,
   metadata: z.record(z.string(), z.unknown()).optional(),
+  references: z.array(receiptReferenceSchema).optional(),
 });
 
 /** Validate a receipt object. Throws ZodError on failure. */

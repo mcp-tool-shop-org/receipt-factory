@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-03-03
+
+### Added
+
+- **Receipt References**: Receipts can cite other receipts and evidence packs by hash, forming a verifiable provenance graph
+  - `ReceiptReference` type: `kind`, `hash`, `description`, optional `path` and `url`
+  - `addReference()` method on `ReceiptBuilder` for fluent chaining
+  - `receiptReferenceSchema` (Zod) for validation
+  - Ref-check: `checkReferences()` verifies referenced receipts exist and hashes match
+- **`@mcptoolshop/rf-policy`**: Policy packs — portable, versioned lint configuration
+  - `PolicyPack` and `PolicyRules` types for configurable quality checks
+  - `loadPolicy(path)` reads and validates policy JSON, fills missing rules from defaults
+  - `DEFAULT_POLICY` and `DEFAULT_RULES` for built-in quality baseline
+- **`rf verify --follow`**: Recursively verify referenced receipts up to depth 5
+- **`rf verify --policy <path>`**: Use custom policy rules for lint checks
+- **`rf graph [dir]`**: Emit JSON graph of receipt-to-receipt references
+- **`rf policy init`**: Scaffold a default policy.json file
+- **Publish workflow**: `receipt-publish.yml` uploads receipts + index to GitHub Pages
+
+### Changed
+
+- `checkLint()` now accepts optional `PolicyRules` parameter (backward compatible)
+- `verifyReceipt()` accepts `follow`, `policy`, and `receiptsDir` options
+- Link check now extracts URLs from `references[]` in addition to subject/outputs/evidence
+- Receipt index entries include optional `references` array (hashes of referenced receipts)
+- 127 tests across 12 packages (up from 108/10)
+
+## [1.2.0] - 2026-03-03
+
+### Added
+
+- **`@mcptoolshop/rf-evidence`**: Evidence packs — portable, content-addressed bundles for offline receipt assembly
+  - `writeEvidencePack()` serializes evidence with SHA-256 content hashes
+  - `readEvidencePack()` verifies integrity before deserializing
+  - Tamper detection: hash + size mismatch throws structured `RfError`
+- **`@mcptoolshop/rf-index`**: Receipt index — scan, index, and search receipt directories
+  - `buildIndex()` recursively scans for receipt JSON files, builds machine-readable index
+  - `searchIndex()` filters by kind, repo name, date range
+  - Optional `--validate` flag runs integrity checks during indexing
+- **`rf collect` command**: `rf collect <kind> --from github` writes evidence packs for later offline assembly
+- **`rf make --from evidence`**: Build receipts from evidence packs without network access
+- **`rf index` command**: `rf index [dir]` scans receipts and writes `index.json`
+- **`rf search` command**: `rf search --kind ci_run --repo alpha --since 2026-03-01`
+
+### Changed
+
+- CLI `make` command accepts `--from evidence --pack <dir>` in addition to `--from github`
+- CLI `make` command accepts `--pack` option for evidence pack directory
+- 108 tests across 10 packages (up from 86/8)
+
 ## [1.1.0] - 2026-03-03
 
 ### Added

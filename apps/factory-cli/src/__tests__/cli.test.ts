@@ -16,15 +16,20 @@ function run(...args: string[]): string {
 describe("rf CLI", () => {
   it("shows version", () => {
     const output = run("--version");
-    expect(output.trim()).toBe("1.1.0");
+    expect(output.trim()).toBe("1.3.0");
   });
 
   it("shows help", () => {
     const output = run("--help");
     expect(output).toContain("receipt-factory");
     expect(output).toContain("make");
+    expect(output).toContain("collect");
     expect(output).toContain("render");
     expect(output).toContain("verify");
+    expect(output).toContain("index");
+    expect(output).toContain("search");
+    expect(output).toContain("graph");
+    expect(output).toContain("policy");
     expect(output).toContain("init");
   });
 
@@ -33,15 +38,49 @@ describe("rf CLI", () => {
     expect(output).toContain("--from");
     expect(output).toContain("--run");
     expect(output).toContain("--repo");
+    expect(output).toContain("--pack");
+  });
+
+  it("collect --help shows options", () => {
+    const output = run("collect", "--help");
+    expect(output).toContain("--from");
+    expect(output).toContain("--run");
+    expect(output).toContain("--tag");
+  });
+
+  it("index --help shows options", () => {
+    const output = run("index", "--help");
+    expect(output).toContain("--output");
+    expect(output).toContain("--validate");
+  });
+
+  it("search --help shows options", () => {
+    const output = run("search", "--help");
+    expect(output).toContain("--kind");
+    expect(output).toContain("--repo");
+    expect(output).toContain("--since");
+    expect(output).toContain("--until");
   });
 
   it("verify --help shows options", () => {
     const output = run("verify", "--help");
     expect(output).toContain("--offline");
+    expect(output).toContain("--follow");
+    expect(output).toContain("--policy");
   });
 
   it("render --help shows formats", () => {
     const output = run("render", "--help");
     expect(output).toContain("--format");
+  });
+
+  it("graph --help shows description", () => {
+    const output = run("graph", "--help");
+    expect(output).toContain("graph");
+  });
+
+  it("policy init --help shows options", () => {
+    const output = run("policy", "init", "--help");
+    expect(output).toContain("--output");
   });
 });

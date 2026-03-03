@@ -1,0 +1,44 @@
+name: Publish Receipts
+
+on:
+  workflow_call:
+    inputs:
+      receipts_dir:
+        type: string
+        default: receipts
+      pages_branch:
+        type: string
+        default: gh-pages
+
+permissions:
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Build receipt index
+        run: npx rf index ${{ inputs.receipts_dir }} --validate
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ inputs.receipts_dir }}
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

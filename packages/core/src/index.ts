@@ -6,6 +6,7 @@ export type {
   ReceiptSubject,
   ReceiptOutput,
   ReceiptEvidence,
+  ReceiptReference,
   ReceiptVerification,
   ReceiptEnvironment,
   ReceiptPolicy,
@@ -23,6 +24,7 @@ export {
   receiptEnvironmentSchema,
   receiptPolicySchema,
   receiptIntegritySchema,
+  receiptReferenceSchema,
   validateReceipt,
   safeValidateReceipt,
 } from "./schema.js";

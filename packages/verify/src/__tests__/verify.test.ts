@@ -195,4 +195,48 @@ describe("checkLint", () => {
     const policyCheck = results.find((r) => r.name === "lint:required_checks");
     expect(policyCheck?.passed).toBe(false);
   });
+
+  it("respects custom policy rules (higher intent minimum)", () => {
+    const receipt = makeFullReceipt();
+    // Default intent_min_length is 10, this intent is ~56 chars
+    const defaultResults = checkLint(receipt);
+    expect(defaultResults.find((r) => r.name === "lint:intent")?.passed).toBe(true);
+
+    // With a policy requiring 100 chars, it should fail
+    const strictResults = checkLint(receipt, {
+      intent_min_length: 100,
+      require_verification_steps: true,
+      min_verification_steps: 1,
+      require_verification_commands: true,
+      min_verification_commands: 1,
+      require_evidence: true,
+      min_evidence: 1,
+      require_context: true,
+      require_subject_url: true,
+      require_required_checks: true,
+      require_references: false,
+    });
+    expect(strictResults.find((r) => r.name === "lint:intent")?.passed).toBe(false);
+  });
+
+  it("checks references when policy requires them", () => {
+    const receipt = makeFullReceipt();
+    const results = checkLint(receipt, {
+      intent_min_length: 10,
+      require_verification_steps: true,
+      min_verification_steps: 1,
+      require_verification_commands: true,
+      min_verification_commands: 1,
+      require_evidence: true,
+      min_evidence: 1,
+      require_context: true,
+      require_subject_url: true,
+      require_required_checks: true,
+      require_references: true,
+    });
+    const refCheck = results.find((r) => r.name === "lint:references");
+    expect(refCheck).toBeDefined();
+    expect(refCheck?.passed).toBe(false);
+    expect(refCheck?.message).toContain("No references");
+  });
 });

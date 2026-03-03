@@ -32,6 +32,15 @@ function extractLinks(receipt: Record<string, unknown>): LinkTarget[] {
     }
   }
 
+  const references = receipt.references as Array<{ url?: string }> | undefined;
+  if (Array.isArray(references)) {
+    for (let i = 0; i < references.length; i++) {
+      if (references[i].url) {
+        links.push({ field: `references[${i}].url`, url: references[i].url! });
+      }
+    }
+  }
+
   return links;
 }
 

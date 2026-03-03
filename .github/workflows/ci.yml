@@ -46,7 +46,7 @@ jobs:
 
       - name: Pack dry-run (publishable packages)
         run: |
-          for pkg in packages/core packages/render packages/verify packages/sign packages/adapters/github apps/factory-cli; do
+          for pkg in packages/core packages/render packages/verify packages/sign packages/evidence packages/index packages/policy packages/adapters/github apps/factory-cli; do
             echo "--- $pkg ---"
             cd $pkg
             npm pack --dry-run 2>&1

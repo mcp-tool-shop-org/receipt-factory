@@ -9,6 +9,7 @@ import type {
   ReceiptVerification,
   ReceiptEnvironment,
   ReceiptPolicy,
+  ReceiptReference,
 } from "./types.js";
 
 /**
@@ -32,6 +33,7 @@ export class ReceiptBuilder {
   private _environment: ReceiptEnvironment = { tool_versions: {} };
   private _policy: ReceiptPolicy = { redacted_fields: [], required_checks: [] };
   private _metadata?: Record<string, unknown>;
+  private _references: ReceiptReference[] = [];
   private _createdAt?: string;
 
   constructor(kind: ReceiptKind) {
@@ -104,6 +106,11 @@ export class ReceiptBuilder {
     return this;
   }
 
+  addReference(r: ReceiptReference): this {
+    this._references.push(r);
+    return this;
+  }
+
   createdAt(iso: string): this {
     this._createdAt = iso;
     return this;
@@ -132,6 +139,10 @@ export class ReceiptBuilder {
 
     if (this._metadata && Object.keys(this._metadata).length > 0) {
       (draft as Record<string, unknown>).metadata = this._metadata;
+    }
+
+    if (this._references.length > 0) {
+      (draft as Record<string, unknown>).references = this._references;
     }
 
     const integrity = computeIntegrity(draft as Record<string, unknown>);
