@@ -34,7 +34,8 @@ receipt-factory produces audit artifacts (receipts) that document what happened 
 
 | Version | Supported |
 |---------|-----------|
-| 1.0.x   | Yes       |
+| 1.7.x   | Yes       |
+| < 1.7   | No        |
 
 ## Reporting a Vulnerability
 

@@ -1,5 +1,9 @@
 <p align="center">
-  <strong>receipt-factory</strong>
+  <a href="README.md">English</a> · <a href="README.ja.md">日本語</a> · <a href="README.zh.md">中文</a> · <a href="README.es.md">Español</a>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/receipt-factory/readme.png" width="400" alt="receipt-factory">
 </p>
 
 <p align="center">
@@ -9,6 +13,7 @@
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/receipt-factory/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/receipt-factory/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://github.com/mcp-tool-shop-org/receipt-factory/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
+  <a href="https://mcp-tool-shop-org.github.io/receipt-factory/"><img src="https://img.shields.io/badge/Landing_Page-live-blue" alt="Landing Page"></a>
 </p>
 
 ---
@@ -27,11 +32,26 @@ You can read a receipt in 30 seconds and verify it in 2 minutes. Everything is r
 
 | Package | Description |
 |---------|-------------|
-| [`@mcptoolshop/rf-core`](packages/core) | Receipt schema, canonicalization, hashing |
-| [`@mcptoolshop/rf-render`](packages/render) | Markdown + HTML renderers |
-| [`@mcptoolshop/rf-verify`](packages/verify) | Schema validation, hash checking, link verification |
+| [`@mcptoolshop/rf-core`](packages/core) | Receipt schema, canonicalization, SHA-256 hashing, fluent builder API |
+| [`@mcptoolshop/rf-render`](packages/render) | Markdown + standalone HTML renderers |
+| [`@mcptoolshop/rf-verify`](packages/verify) | Schema validation, hash integrity, link verification, policy enforcement |
+| [`@mcptoolshop/rf-sign`](packages/sign) | Cosign-based signing — receipts, policies, bundles (detached sidecars) |
+| [`@mcptoolshop/rf-evidence`](packages/evidence) | Evidence packs — portable, content-addressed evidence bundles |
+| [`@mcptoolshop/rf-index`](packages/index) | Receipt index — scan, search, filter receipt directories |
+| [`@mcptoolshop/rf-policy`](packages/policy) | Policy packs — portable, versioned lint configuration |
+| [`@mcptoolshop/rf-bundle`](packages/bundle) | Receipt bundles — self-verifying truth capsules (zip) |
 | [`@mcptoolshop/rf-adapter-github`](packages/adapters/github) | GitHub Actions data fetching via `gh` CLI |
-| [`@mcptoolshop/rf-cli`](apps/factory-cli) | The `rf` command — create, render, verify receipts |
+| [`@mcptoolshop/rf-cli`](apps/factory-cli) | The `rf` command — create, collect, render, verify, sign receipts |
+
+## Pipelines
+
+| Pipeline | Receipt Kind | What it proves |
+|----------|-------------|----------------|
+| [`ci-receipts`](pipelines/ci-receipts) | `ci_run` | A CI build/test happened with specific inputs and results |
+| [`release-receipts`](pipelines/release-receipts) | `release` | A release was published with specific assets and commits |
+| [`registry-sync`](pipelines/registry-sync) | `registry_sync` | What's published vs what's in the repo — drift classification |
+| [`security-audit`](pipelines/security-audit) | `audit` | What was scanned, with what tool, what vulnerabilities were found |
+| [`sbom`](pipelines/sbom) | `sbom` | Software bill of materials generated and attested |
 
 ## Quick start
 
@@ -47,13 +67,34 @@ rf render receipts/ci/2026-03-03/12345678.json --format html
 
 # Verify it
 rf verify receipts/ci/2026-03-03/12345678.json
+
+# Verify with strict lint + policy
+rf verify receipts/ci/2026-03-03/12345678.json --strict --policy policy.json
+
+# Bundle receipts into a portable capsule
+rf bundle create receipts/ci/2026-03-03/12345678.json --follow --policy policy.json
+
+# Sign the bundle
+rf bundle sign bundles/abc123.bundle.zip --keyless
 ```
+
+## Trust layers
+
+receipt-factory provides four stacking trust layers:
+
+1. **Receipt integrity** — SHA-256 content-addressed receipts (tamper-evident)
+2. **Governance integrity** — policy-based lint rules with signed policy files
+3. **Bundle integrity** — self-verifying zip bundles with hash manifests
+4. **Bundle authority** — detached cosign signatures on bundles (tamper-proof)
+
+Verification order: signature → file integrity → semantic integrity → governance.
 
 ## What this proves
 
-- A build/test/release/audit happened at a specific time
+- A build, test, release, audit, or SBOM generation happened at a specific time
 - The inputs and outputs are content-addressed and tamper-evident
 - You can re-verify the receipt at any time with `rf verify`
+- The full provenance chain is walkable with `rf graph`
 
 ## What this does NOT prove
 
@@ -65,10 +106,12 @@ rf verify receipts/ci/2026-03-03/12345678.json
 
 See [SECURITY.md](SECURITY.md) for threat model and reporting.
 
+**No telemetry.** receipt-factory never phones home, tracks usage, or collects analytics.
+
 ## License
 
 MIT
 
 ---
 
-Built by [MCP Tool Shop](https://mcp-tool-shop.github.io/)
+Built by <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
