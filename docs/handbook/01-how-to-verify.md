@@ -112,6 +112,67 @@ rf policy sign policy.json --keyless
 rf verify receipt.json --strict --policy policy.json --require-policy-signature
 ```
 
+## Receipt bundles
+
+Bundles are portable, self-verifying truth capsules. A bundle is a zip archive containing a root receipt, its referenced receipts, evidence packs, policy, signatures, and tamper-evidence hashes.
+
+### Creating a bundle
+
+```bash
+# Bundle a single receipt
+rf bundle create receipts/ci/2026-03-03/12345.json
+
+# Bundle with referenced receipts (walks the provenance graph)
+rf bundle create receipts/release/v1.0.0.json --follow --receipts-dir receipts/
+
+# Include evidence packs and policy
+rf bundle create receipt.json --follow --include-evidence --policy policy.json
+
+# Custom output path
+rf bundle create receipt.json --out bundles/release-v1.0.0.bundle.zip
+```
+
+### Verifying a bundle
+
+```bash
+# Explicit bundle verification
+rf bundle verify bundles/abc123.bundle.zip
+
+# Auto-detect: rf verify handles .zip files automatically
+rf verify bundles/abc123.bundle.zip
+
+# Strict lint checks on all receipts in the bundle
+rf bundle verify bundles/abc123.bundle.zip --strict
+```
+
+Bundle verification is self-contained:
+- Every file's SHA-256 is checked against `hashes.json`
+- Every receipt inside the bundle is verified offline (no network access)
+- References resolve only within the bundle — no filesystem wandering
+
+### Inspecting a bundle
+
+```bash
+rf bundle inspect bundles/abc123.bundle.zip
+```
+
+Quick summary: shows the manifest (root receipt, contents, creation date, factory version) without full verification.
+
+### What's inside a bundle
+
+```
+bundle.zip/
+├── manifest.json     # Bundle metadata
+├── hashes.json       # SHA-256 of every file
+├── VERIFY.md         # Human-readable verification instructions
+├── receipts/
+│   ├── root.json     # The primary receipt
+│   └── <hash>.json   # Referenced receipts (if --follow)
+├── evidence/         # Evidence packs (if --include-evidence)
+├── policy/           # Policy file + signatures (if --policy)
+└── signatures/       # Receipt and policy signature sidecars
+```
+
 ## Viewing the reference graph
 
 ```bash

@@ -16,7 +16,7 @@ function run(...args: string[]): string {
 describe("rf CLI", () => {
   it("shows version", () => {
     const output = run("--version");
-    expect(output.trim()).toBe("1.4.0");
+    expect(output.trim()).toBe("1.5.0");
   });
 
   it("shows help", () => {
@@ -30,6 +30,7 @@ describe("rf CLI", () => {
     expect(output).toContain("search");
     expect(output).toContain("graph");
     expect(output).toContain("policy");
+    expect(output).toContain("bundle");
     expect(output).toContain("init");
   });
 
@@ -90,5 +91,23 @@ describe("rf CLI", () => {
     const output = run("policy", "sign", "--help");
     expect(output).toContain("--keyless");
     expect(output).toContain("--key");
+  });
+
+  it("bundle create --help shows options", () => {
+    const output = run("bundle", "create", "--help");
+    expect(output).toContain("--follow");
+    expect(output).toContain("--include-evidence");
+    expect(output).toContain("--policy");
+    expect(output).toContain("--out");
+  });
+
+  it("bundle verify --help shows options", () => {
+    const output = run("bundle", "verify", "--help");
+    expect(output).toContain("--strict");
+  });
+
+  it("bundle inspect --help shows description", () => {
+    const output = run("bundle", "inspect", "--help");
+    expect(output).toContain("manifest");
   });
 });

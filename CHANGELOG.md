@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-03-03
+
+### Added
+
+- **`@mcptoolshop/rf-bundle`**: Receipt bundles — portable, self-verifying truth capsules
+  - `createBundle()` packs a receipt + references + evidence + policy into a single zip archive
+  - `verifyBundle()` extracts and verifies all hashes and receipts (bundle-internal, no network)
+  - `inspectBundle()` reads the manifest without full verification
+  - Bundle format: `manifest.json`, `hashes.json`, `VERIFY.md`, `receipts/`, `evidence/`, `policy/`, `signatures/`
+  - SHA-256 hash of every file stored in `hashes.json` for tamper-evidence
+  - `hashes.json` cannot hash itself — intentionally excluded
+  - `VERIFY.md` provides human-readable verification instructions
+- **`rf bundle create <file>`**: Create a portable receipt bundle
+  - `--follow` includes referenced receipts (walks provenance graph, depth 5)
+  - `--include-evidence` includes evidence packs
+  - `--policy <path>` includes a policy file and its signature sidecars
+  - `--out <path>` sets the output path (default: `bundles/<hash>.bundle.zip`)
+- **`rf bundle verify <file>`**: Verify a bundle (hash checks + receipt verification)
+  - `--strict` enables lint checks on all receipts
+  - Bundle-internal semantics: no network, no filesystem wandering
+- **`rf bundle inspect <file>`**: Quick capsule summary (manifest only, no verification)
+- **`rf verify <file.zip>`**: Auto-detect bundles — `.zip` files are automatically verified as bundles
+- Signature sidecars (`.sig`, `.cert`) are automatically collected into `signatures/`
+
+### Changed
+
+- `rf verify` now auto-detects `.zip` files and delegates to bundle verification
+- CI pack dry-run includes `packages/bundle`
+- 147 tests across 13 packages (up from 134/12)
+
 ## [1.4.0] - 2026-03-03
 
 ### Added

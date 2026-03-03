@@ -1,7 +1,7 @@
 {
-  "name": "@mcptoolshop/rf-verify",
+  "name": "@mcptoolshop/rf-bundle",
   "version": "1.5.0",
-  "description": "Receipt verification — schema validation, hash checking, link verification",
+  "description": "Receipt bundles — portable, self-verifying truth capsules",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,9 +24,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mcptoolshop/rf-core": "workspace:*"
+    "@mcptoolshop/rf-core": "workspace:*",
+    "@mcptoolshop/rf-verify": "workspace:*",
+    "adm-zip": "^0.5.16"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.7",
     "@types/node": "^22.0.0",
     "typescript": "^5.7.0",
     "vitest": "^3.0.0"
@@ -39,7 +42,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mcp-tool-shop-org/receipt-factory.git",
-    "directory": "packages/verify"
+    "directory": "packages/bundle"
   },
   "publishConfig": {
     "access": "public",

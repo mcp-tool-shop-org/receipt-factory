@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/rf-index",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Receipt index — scan, index, and search receipt directories",
   "type": "module",
   "main": "dist/index.js",

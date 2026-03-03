@@ -1,8 +1,9 @@
 import { existsSync, readFileSync } from "node:fs";
-import { dirname } from "node:path";
+import { dirname, extname } from "node:path";
 import { verifyReceipt, formatResult } from "@mcptoolshop/rf-verify";
 import { loadPolicy } from "@mcptoolshop/rf-policy";
 import { verifyBlob } from "@mcptoolshop/rf-sign";
+import { verifyBundle } from "@mcptoolshop/rf-bundle";
 
 export interface VerifyOptions {
   offline: boolean;
@@ -15,6 +16,47 @@ export interface VerifyOptions {
 }
 
 export async function handleVerify(file: string, opts: VerifyOptions): Promise<void> {
+  // Auto-detect bundles: if the file is a .zip, delegate to bundle verification
+  if (extname(file).toLowerCase() === ".zip") {
+    try {
+      const result = await verifyBundle(file, { strict: opts.strict });
+
+      const hashPassed = result.hashChecks.filter((c) => c.passed).length;
+      const hashTotal = result.hashChecks.length;
+      console.log(`Hash checks: ${hashPassed}/${hashTotal} passed`);
+
+      for (const check of result.hashChecks) {
+        const icon = check.passed ? "✓" : "✗";
+        console.log(`  ${icon} ${check.file}: ${check.message}`);
+      }
+
+      const receiptPassed = result.receiptChecks.filter((c) => c.valid).length;
+      const receiptTotal = result.receiptChecks.length;
+      console.log(`Receipt checks: ${receiptPassed}/${receiptTotal} passed`);
+
+      for (const check of result.receiptChecks) {
+        const icon = check.valid ? "✓" : "✗";
+        console.log(`  ${icon} ${check.file}: ${check.message}`);
+      }
+
+      if (result.valid) {
+        console.log("\n✓ Bundle verified");
+      } else {
+        console.log("\n✗ Bundle verification failed");
+        process.exit(3);
+      }
+      return;
+    } catch (err) {
+      if (err instanceof Error && "code" in err) {
+        console.error(`[${(err as { code: string }).code}] ${err.message}`);
+      } else {
+        console.error(`[RF_BUNDLE] ${err instanceof Error ? err.message : String(err)}`);
+      }
+      process.exit(1);
+      return;
+    }
+  }
+
   try {
     const raw = readFileSync(file, "utf-8");
     const receipt = JSON.parse(raw) as Record<string, unknown>;

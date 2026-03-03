@@ -12,6 +12,11 @@ import { handleIndex } from "./commands/index-cmd.js";
 import { handleSearch } from "./commands/search.js";
 import { handleGraph } from "./commands/graph.js";
 import { handlePolicyInit } from "./commands/policy.js";
+import {
+  handleBundleCreate,
+  handleBundleVerify,
+  handleBundleInspect,
+} from "./commands/bundle.js";
 
 const program = new Command();
 
@@ -115,6 +120,31 @@ policyCmd
   .option("--keyless", "Use keyless signing (OIDC, for CI)", false)
   .option("--key <path>", "Path to cosign private key")
   .action(handleSignPolicy);
+
+const bundleCmd = program
+  .command("bundle")
+  .description("Create, verify, and inspect receipt bundles");
+
+bundleCmd
+  .command("create <file>")
+  .description("Create a portable receipt bundle (zip)")
+  .option("--follow", "Include referenced receipts", false)
+  .option("--include-evidence", "Include evidence packs", false)
+  .option("--policy <path>", "Include a policy file in the bundle")
+  .option("--out <path>", "Output path for the zip file")
+  .option("--receipts-dir <dir>", "Directory for resolving reference paths")
+  .action(handleBundleCreate);
+
+bundleCmd
+  .command("verify <file>")
+  .description("Verify a receipt bundle")
+  .option("--strict", "Enable strict lint checks", false)
+  .action(handleBundleVerify);
+
+bundleCmd
+  .command("inspect <file>")
+  .description("Show bundle manifest summary")
+  .action(handleBundleInspect);
 
 program
   .command("init")
