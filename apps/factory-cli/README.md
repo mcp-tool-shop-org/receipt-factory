@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/receipt-factory/readme.png" width="200" />
+</p>
+
 # @mcptoolshop/rf-cli
 
 The `rf` command — create, collect, render, verify, and sign receipts.

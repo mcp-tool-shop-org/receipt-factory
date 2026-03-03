@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/rf-pipeline-release",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "private": true,
   "description": "Release receipts pipeline — produces receipts from GitHub releases",
   "type": "module",

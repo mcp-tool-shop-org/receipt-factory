@@ -61,7 +61,7 @@ export function assemble(evidence: RegistrySyncEvidence): Receipt {
   });
 
   // Metadata
-  builder.meta("factory_version", "1.7.0");
+  builder.meta("factory_version", "1.7.1");
   builder.meta("pipeline", "registry-sync");
   builder.meta("total_packages", summary.total);
   builder.meta("in_sync", summary.in_sync);

@@ -20,11 +20,11 @@
 
 收据是一种经过签名、带有时间戳且可重现的记录，用于记录**发生了什么**：
 
-- **做了什么**——操作、输入、输出
-- **为什么这样做**——意图、策略、上下文
-- **谁/什么做了这件事**——执行者、运行器、工具版本
-- **证明这件事发生了**——哈希值、链接、校验和、日志
-- **如何验证**——命令、重新运行说明
+- **做了什么** — 动作、输入、输出
+- **为什么这样做** — 意图、策略、上下文
+- **谁/什么执行的** — 执行者、运行器、工具版本
+- **证明它发生了** — 哈希值、链接、校验和、日志
+- **如何验证它** — 命令、重新运行说明
 
 您可以在 30 秒内阅读收据，并在 2 分钟内验证它。所有内容都是可重现的。如果不是，那它就不是一个收据。
 
@@ -35,13 +35,13 @@
 | [`@mcptoolshop/rf-core`](packages/core) | 收据模式、规范化、SHA-256 哈希、流畅的构建器 API |
 | [`@mcptoolshop/rf-render`](packages/render) | Markdown + 独立 HTML 渲染器 |
 | [`@mcptoolshop/rf-verify`](packages/verify) | 模式验证、哈希完整性、链接验证、策略执行 |
-| [`@mcptoolshop/rf-sign`](packages/sign) | 基于 Cosign 的签名——收据、策略、捆绑包（分离的附加组件） |
-| [`@mcptoolshop/rf-evidence`](packages/evidence) | 证据包——可移植的、基于内容的证据捆绑包 |
-| [`@mcptoolshop/rf-index`](packages/index) | 收据索引——扫描、搜索、过滤收据目录 |
-| [`@mcptoolshop/rf-policy`](packages/policy) | 策略包——可移植的、版本化的代码检查配置 |
-| [`@mcptoolshop/rf-bundle`](packages/bundle) | 收据捆绑包——自验证的真值封装（zip 格式） |
+| [`@mcptoolshop/rf-sign`](packages/sign) | 基于 Cosign 的签名 — 收据、策略、捆绑包（分离的附加组件） |
+| [`@mcptoolshop/rf-evidence`](packages/evidence) | 证据包 — 便携式、基于内容的证据捆绑包 |
+| [`@mcptoolshop/rf-index`](packages/index) | 收据索引 — 扫描、搜索、过滤收据目录 |
+| [`@mcptoolshop/rf-policy`](packages/policy) | 策略包 — 便携式、版本化的代码检查配置 |
+| [`@mcptoolshop/rf-bundle`](packages/bundle) | 收据捆绑包 — 自验证的真值封装（zip 格式） |
 | [`@mcptoolshop/rf-adapter-github`](packages/adapters/github) | 通过 `gh` CLI 获取 GitHub Actions 数据 |
-| [`@mcptoolshop/rf-cli`](apps/factory-cli) | `rf` 命令——创建、收集、渲染、验证、签名收据 |
+| [`@mcptoolshop/rf-cli`](apps/factory-cli) | `rf` 命令 — 创建、收集、渲染、验证、签名收据 |
 
 ## 流水线
 
@@ -49,7 +49,7 @@
 |----------|-------------|----------------|
 | [`ci-receipts`](pipelines/ci-receipts) | `ci_run` | 一个 CI 构建/测试过程，具有特定的输入和结果 |
 | [`release-receipts`](pipelines/release-receipts) | `release` | 发布了一个版本，其中包含特定的资源和提交 |
-| [`registry-sync`](pipelines/registry-sync) | `registry_sync` | 已发布的内容与仓库中的内容之间的差异——漂移分类 |
+| [`registry-sync`](pipelines/registry-sync) | `registry_sync` | 已发布的内容与仓库中的内容之间的差异 |
 | [`security-audit`](pipelines/security-audit) | `audit` | 扫描了什么，使用了什么工具，发现了哪些漏洞 |
 | [`sbom`](pipelines/sbom) | `sbom` | 生成并验证了软件物料清单 |
 
@@ -82,10 +82,10 @@ rf bundle sign bundles/abc123.bundle.zip --keyless
 
 receipt-factory 提供了四层可堆叠的信任层：
 
-1. **收据完整性**——基于 SHA-256 的、内容寻址的收据（防篡改）
-2. **治理完整性**——基于策略的代码检查规则，以及带有签名的策略文件
-3. **捆绑包完整性**——自验证的 zip 捆绑包，包含哈希清单
-4. **捆绑包权威性**——捆绑包上的分离的 Cosign 签名（防篡改）
+1. **收据完整性** — 基于 SHA-256 的内容寻址收据（防篡改）
+2. **治理完整性** — 基于策略的代码检查规则，并带有签名策略文件
+3. **捆绑包完整性** — 自验证的 zip 捆绑包，包含哈希清单
+4. **捆绑包权威性** — 捆绑包上的分离的 Cosign 签名（防篡改）
 
 验证顺序：签名 → 文件完整性 → 语义完整性 → 治理。
 
@@ -93,14 +93,14 @@ receipt-factory 提供了四层可堆叠的信任层：
 
 - 在特定时间，发生了构建、测试、发布、审计或 SBOM 生成过程
 - 输入和输出是基于内容的，并且具有防篡改性
-- 您可以使用 `rf verify` 随时重新验证收据
+- 您可以使用 `rf verify` 在任何时间重新验证收据
 - 您可以使用 `rf graph` 跟踪完整的溯源链
 
 ## 这没有证明什么
 
 - 底层代码是否正确（收据证明的是过程，而不是质量）
-- CI 环境本身是否受到破坏（这是供应链问题）
-- 确认在创建收据后，工件是否被修改（使用签名来解决此问题）
+- CI 环境本身是否没有被破坏（这是供应链问题）
+- 发布的工件在创建收据后是否被修改过（使用签名来解决这个问题）
 
 ## 安全
 
