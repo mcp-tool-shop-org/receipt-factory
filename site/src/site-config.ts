@@ -6,7 +6,7 @@ export const config: SiteConfig = {
   logoBadge: 'RF',
   brandName: 'receipt-factory',
   repoUrl: 'https://github.com/mcp-tool-shop-org/receipt-factory',
-  npmUrl: 'https://www.npmjs.com/package/@mcptoolshop/rf-cli',
+  npmUrl: 'https://www.npmjs.com/package/@receipt-factory/cli',
   footerText: 'MIT Licensed — built by <a href="https://mcp-tool-shop.github.io/" style="color:var(--color-muted);text-decoration:underline">MCP Tool Shop</a>',
 
   hero: {
@@ -15,9 +15,9 @@ export const config: SiteConfig = {
     headlineAccent: 'Without trusting vibes.',
     description: 'receipt-factory creates signed, timestamped, reproducible records of CI runs, releases, audits, and supply chain operations. Every receipt is content-addressed, tamper-evident, and verifiable in under 2 minutes.',
     primaryCta: { href: '#quick-start', label: 'Get started' },
-    secondaryCta: { href: '#trust-layers', label: 'How it works' },
+    secondaryCta: { href: 'handbook/', label: 'Read the Handbook' },
     previews: [
-      { label: 'Install', code: 'npm install -g @mcptoolshop/rf-cli' },
+      { label: 'Install', code: 'npm install -g @receipt-factory/cli' },
       { label: 'Create', code: 'rf make ci --from github --run 12345678' },
       { label: 'Verify', code: 'rf verify receipts/ci/2026-03-03/12345678.json' },
     ],
