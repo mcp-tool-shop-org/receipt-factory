@@ -1,18 +1,18 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { runCIPipeline, assemble as assembleCi } from "@mcptoolshop/rf-pipeline-ci";
-import { runReleasePipeline, assemble as assembleRelease } from "@mcptoolshop/rf-pipeline-release";
-import { assemble as assembleRegistrySync } from "@mcptoolshop/rf-pipeline-registry-sync";
-import { assemble as assembleSecurityAudit } from "@mcptoolshop/rf-pipeline-security-audit";
-import { assemble as assembleSbom } from "@mcptoolshop/rf-pipeline-sbom";
-import { RfError, canonicalize } from "@mcptoolshop/rf-core";
-import { renderMarkdown, renderHtml } from "@mcptoolshop/rf-render";
-import { readEvidencePack } from "@mcptoolshop/rf-evidence";
-import type { GitHubCIEvidence } from "@mcptoolshop/rf-adapter-github";
-import type { GitHubReleaseEvidence } from "@mcptoolshop/rf-adapter-github";
-import type { RegistrySyncEvidence } from "@mcptoolshop/rf-pipeline-registry-sync";
-import type { SecurityAuditEvidence } from "@mcptoolshop/rf-pipeline-security-audit";
-import type { SbomEvidence } from "@mcptoolshop/rf-pipeline-sbom";
+import { runCIPipeline, assemble as assembleCi } from "@receipt-factory/pipeline-ci";
+import { runReleasePipeline, assemble as assembleRelease } from "@receipt-factory/pipeline-release";
+import { assemble as assembleRegistrySync } from "@receipt-factory/pipeline-registry-sync";
+import { assemble as assembleSecurityAudit } from "@receipt-factory/pipeline-security-audit";
+import { assemble as assembleSbom } from "@receipt-factory/pipeline-sbom";
+import { RfError, canonicalize } from "@receipt-factory/core";
+import { renderMarkdown, renderHtml } from "@receipt-factory/render";
+import { readEvidencePack } from "@receipt-factory/evidence";
+import type { GitHubCIEvidence } from "@receipt-factory/adapter-github";
+import type { GitHubReleaseEvidence } from "@receipt-factory/adapter-github";
+import type { RegistrySyncEvidence } from "@receipt-factory/pipeline-registry-sync";
+import type { SecurityAuditEvidence } from "@receipt-factory/pipeline-security-audit";
+import type { SbomEvidence } from "@receipt-factory/pipeline-sbom";
 
 export interface MakeOptions {
   from: string;

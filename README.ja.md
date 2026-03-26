@@ -32,16 +32,16 @@
 
 | パッケージ | 説明 |
 |---------|-------------|
-| [`@mcptoolshop/rf-core`](packages/core) | レシートのスキーマ、正規化、SHA-256ハッシュ、Fluent Builder API |
-| [`@mcptoolshop/rf-render`](packages/render) | MarkdownとスタンドアロンHTMLレンダラー |
-| [`@mcptoolshop/rf-verify`](packages/verify) | スキーマ検証、ハッシュの完全性、リンクの検証、ポリシーの適用 |
-| [`@mcptoolshop/rf-sign`](packages/sign) | Cosignベースの署名：レシート、ポリシー、バンドル（分離されたサイドカー） |
-| [`@mcptoolshop/rf-evidence`](packages/evidence) | エビデンスパック：ポータブルな、コンテンツアドレス指定されたエビデンスバンドル |
-| [`@mcptoolshop/rf-index`](packages/index) | レシートインデックス：レシートディレクトリをスキャン、検索、フィルタリング |
-| [`@mcptoolshop/rf-policy`](packages/policy) | ポリシーパック：ポータブルでバージョン管理されたLint設定 |
-| [`@mcptoolshop/rf-bundle`](packages/bundle) | レシートバンドル：自己検証型の真実のカプセル（zip） |
-| [`@mcptoolshop/rf-adapter-github`](packages/adapters/github) | `gh` CLIを介したGitHub Actionsデータ取得 |
-| [`@mcptoolshop/rf-cli`](apps/factory-cli) | `rf`コマンド：レシートの作成、収集、レンダリング、検証、署名 |
+| [`@receipt-factory/core`](packages/core) | レシートのスキーマ、正規化、SHA-256ハッシュ、Fluent Builder API |
+| [`@receipt-factory/render`](packages/render) | MarkdownとスタンドアロンHTMLレンダラー |
+| [`@receipt-factory/verify`](packages/verify) | スキーマ検証、ハッシュの完全性、リンクの検証、ポリシーの適用 |
+| [`@receipt-factory/sign`](packages/sign) | Cosignベースの署名：レシート、ポリシー、バンドル（分離されたサイドカー） |
+| [`@receipt-factory/evidence`](packages/evidence) | エビデンスパック：ポータブルな、コンテンツアドレス指定されたエビデンスバンドル |
+| [`@receipt-factory/index`](packages/index) | レシートインデックス：レシートディレクトリをスキャン、検索、フィルタリング |
+| [`@receipt-factory/policy`](packages/policy) | ポリシーパック：ポータブルでバージョン管理されたLint設定 |
+| [`@receipt-factory/bundle`](packages/bundle) | レシートバンドル：自己検証型の真実のカプセル（zip） |
+| [`@receipt-factory/adapter-github`](packages/adapters/github) | `gh` CLIを介したGitHub Actionsデータ取得 |
+| [`@receipt-factory/cli`](apps/factory-cli) | `rf`コマンド：レシートの作成、収集、レンダリング、検証、署名 |
 
 ## パイプライン
 
@@ -57,7 +57,7 @@
 
 ```bash
 # Install the CLI
-npm install -g @mcptoolshop/rf-cli
+npm install -g @receipt-factory/cli
 
 # Create a receipt from a GitHub Actions run
 rf make ci --from github --run 12345678

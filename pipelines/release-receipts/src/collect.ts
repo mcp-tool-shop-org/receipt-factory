@@ -1,5 +1,5 @@
-import { fetchRelease } from "@mcptoolshop/rf-adapter-github";
-import type { GitHubReleaseEvidence } from "@mcptoolshop/rf-adapter-github";
+import { fetchRelease } from "@receipt-factory/adapter-github";
+import type { GitHubReleaseEvidence } from "@receipt-factory/adapter-github";
 
 export type { GitHubReleaseEvidence };
 

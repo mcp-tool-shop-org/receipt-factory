@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import type { ReceiptKind } from "@mcptoolshop/rf-core";
+import type { ReceiptKind } from "@receipt-factory/core";
 import type { PackManifest } from "./types.js";
 
 /**

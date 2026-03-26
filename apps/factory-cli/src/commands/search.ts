@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
-import { searchIndex } from "@mcptoolshop/rf-index";
-import type { ReceiptIndex, SearchFilter } from "@mcptoolshop/rf-index";
-import type { ReceiptKind } from "@mcptoolshop/rf-core";
+import { searchIndex } from "@receipt-factory/index";
+import type { ReceiptIndex, SearchFilter } from "@receipt-factory/index";
+import type { ReceiptKind } from "@receipt-factory/core";
 
 export interface SearchOptions {
   kind?: string;

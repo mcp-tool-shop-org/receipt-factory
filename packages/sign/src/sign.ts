@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
-import { computeDigest } from "@mcptoolshop/rf-core";
-import { RfError } from "@mcptoolshop/rf-core";
+import { computeDigest } from "@receipt-factory/core";
+import { RfError } from "@receipt-factory/core";
 import { isCosignAvailable, signBlob } from "./cosign.js";
 import type { SignOptions, SignResult } from "./types.js";
 

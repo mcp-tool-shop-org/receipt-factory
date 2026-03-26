@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { assemble } from "../assemble.js";
-import type { GitHubCIEvidence } from "@mcptoolshop/rf-adapter-github";
-import { verifyIntegrity } from "@mcptoolshop/rf-core";
+import type { GitHubCIEvidence } from "@receipt-factory/adapter-github";
+import { verifyIntegrity } from "@receipt-factory/core";
 
 const mockEvidence: GitHubCIEvidence = {
   run: {

@@ -1,4 +1,4 @@
-import { verifyIntegrity, canonicalize } from "@mcptoolshop/rf-core";
+import { verifyIntegrity, canonicalize } from "@receipt-factory/core";
 import type { VerificationCheck } from "./types.js";
 
 interface IntegrityBlock {

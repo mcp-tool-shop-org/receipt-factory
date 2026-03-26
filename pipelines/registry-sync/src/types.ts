@@ -2,7 +2,7 @@
  * A single package's sync status.
  */
 export interface PackageSyncEntry {
-  /** Package name (e.g., "@mcptoolshop/rf-core"). */
+  /** Package name (e.g., "@receipt-factory/core"). */
   name: string;
   /** Version in the local package.json. */
   localVersion: string;

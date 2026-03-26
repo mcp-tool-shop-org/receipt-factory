@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { assemble } from "../assemble.js";
-import type { GitHubReleaseEvidence } from "@mcptoolshop/rf-adapter-github";
+import type { GitHubReleaseEvidence } from "@receipt-factory/adapter-github";
 
 function makeReleaseEvidence(): GitHubReleaseEvidence {
   return {

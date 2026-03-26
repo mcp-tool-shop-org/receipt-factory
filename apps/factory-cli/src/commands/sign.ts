@@ -1,4 +1,4 @@
-import { signReceipt, signPolicy } from "@mcptoolshop/rf-sign";
+import { signReceipt, signPolicy } from "@receipt-factory/sign";
 
 export interface SignOptions {
   keyless: boolean;

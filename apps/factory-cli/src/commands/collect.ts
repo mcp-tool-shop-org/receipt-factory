@@ -1,7 +1,7 @@
-import { collect as collectCI } from "@mcptoolshop/rf-pipeline-ci";
-import { collect as collectRelease } from "@mcptoolshop/rf-pipeline-release";
-import { writeEvidencePack } from "@mcptoolshop/rf-evidence";
-import { RfError } from "@mcptoolshop/rf-core";
+import { collect as collectCI } from "@receipt-factory/pipeline-ci";
+import { collect as collectRelease } from "@receipt-factory/pipeline-release";
+import { writeEvidencePack } from "@receipt-factory/evidence";
+import { RfError } from "@receipt-factory/core";
 import { join } from "node:path";
 
 export interface CollectOptions {

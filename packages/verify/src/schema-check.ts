@@ -1,4 +1,4 @@
-import { safeValidateReceipt } from "@mcptoolshop/rf-core";
+import { safeValidateReceipt } from "@receipt-factory/core";
 import type { VerificationCheck } from "./types.js";
 
 /**

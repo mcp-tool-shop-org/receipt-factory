@@ -8,9 +8,9 @@ function makeEvidence(overrides?: Partial<RegistrySyncEvidence>): RegistrySyncEv
     registry: "npm",
     collected_at: "2026-03-03T12:00:00.000Z",
     packages: [
-      { name: "@mcptoolshop/rf-core", localVersion: "1.7.0", publishedVersion: "1.6.0", inSync: false, registry: "npm" },
-      { name: "@mcptoolshop/rf-verify", localVersion: "1.7.0", publishedVersion: "1.7.0", inSync: true, registry: "npm" },
-      { name: "@mcptoolshop/rf-new", localVersion: "0.1.0", publishedVersion: null, inSync: false, registry: "npm" },
+      { name: "@receipt-factory/core", localVersion: "1.7.0", publishedVersion: "1.6.0", inSync: false, registry: "npm" },
+      { name: "@receipt-factory/verify", localVersion: "1.7.0", publishedVersion: "1.7.0", inSync: true, registry: "npm" },
+      { name: "@receipt-factory/new", localVersion: "0.1.0", publishedVersion: null, inSync: false, registry: "npm" },
     ],
     summary: {
       total: 3,
@@ -39,7 +39,7 @@ describe("registry-sync assemble", () => {
   it("includes all packages as outputs", () => {
     const receipt = assemble(makeEvidence());
     expect(receipt.outputs.length).toBe(3);
-    expect(receipt.outputs[0].name).toBe("@mcptoolshop/rf-core");
+    expect(receipt.outputs[0].name).toBe("@receipt-factory/core");
   });
 
   it("records drift summary in metadata", () => {
@@ -53,7 +53,7 @@ describe("registry-sync assemble", () => {
   it("handles all-in-sync case", () => {
     const receipt = assemble(makeEvidence({
       packages: [
-        { name: "@mcptoolshop/rf-core", localVersion: "1.7.0", publishedVersion: "1.7.0", inSync: true, registry: "npm" },
+        { name: "@receipt-factory/core", localVersion: "1.7.0", publishedVersion: "1.7.0", inSync: true, registry: "npm" },
       ],
       summary: { total: 1, in_sync: 1, ahead: 0, behind: 0, unpublished: 0 },
     }));

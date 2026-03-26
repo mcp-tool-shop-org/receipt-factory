@@ -32,16 +32,16 @@
 
 | 软件包 | 描述 |
 |---------|-------------|
-| [`@mcptoolshop/rf-core`](packages/core) | 收据模式、规范化、SHA-256 哈希、流畅的构建器 API |
-| [`@mcptoolshop/rf-render`](packages/render) | Markdown + 独立 HTML 渲染器 |
-| [`@mcptoolshop/rf-verify`](packages/verify) | 模式验证、哈希完整性、链接验证、策略执行 |
-| [`@mcptoolshop/rf-sign`](packages/sign) | 基于 Cosign 的签名 — 收据、策略、捆绑包（分离的附加组件） |
-| [`@mcptoolshop/rf-evidence`](packages/evidence) | 证据包 — 便携式、基于内容的证据捆绑包 |
-| [`@mcptoolshop/rf-index`](packages/index) | 收据索引 — 扫描、搜索、过滤收据目录 |
-| [`@mcptoolshop/rf-policy`](packages/policy) | 策略包 — 便携式、版本化的代码检查配置 |
-| [`@mcptoolshop/rf-bundle`](packages/bundle) | 收据捆绑包 — 自验证的真值封装（zip 格式） |
-| [`@mcptoolshop/rf-adapter-github`](packages/adapters/github) | 通过 `gh` CLI 获取 GitHub Actions 数据 |
-| [`@mcptoolshop/rf-cli`](apps/factory-cli) | `rf` 命令 — 创建、收集、渲染、验证、签名收据 |
+| [`@receipt-factory/core`](packages/core) | 收据模式、规范化、SHA-256 哈希、流畅的构建器 API |
+| [`@receipt-factory/render`](packages/render) | Markdown + 独立 HTML 渲染器 |
+| [`@receipt-factory/verify`](packages/verify) | 模式验证、哈希完整性、链接验证、策略执行 |
+| [`@receipt-factory/sign`](packages/sign) | 基于 Cosign 的签名 — 收据、策略、捆绑包（分离的附加组件） |
+| [`@receipt-factory/evidence`](packages/evidence) | 证据包 — 便携式、基于内容的证据捆绑包 |
+| [`@receipt-factory/index`](packages/index) | 收据索引 — 扫描、搜索、过滤收据目录 |
+| [`@receipt-factory/policy`](packages/policy) | 策略包 — 便携式、版本化的代码检查配置 |
+| [`@receipt-factory/bundle`](packages/bundle) | 收据捆绑包 — 自验证的真值封装（zip 格式） |
+| [`@receipt-factory/adapter-github`](packages/adapters/github) | 通过 `gh` CLI 获取 GitHub Actions 数据 |
+| [`@receipt-factory/cli`](apps/factory-cli) | `rf` 命令 — 创建、收集、渲染、验证、签名收据 |
 
 ## 流水线
 
@@ -57,7 +57,7 @@
 
 ```bash
 # Install the CLI
-npm install -g @mcptoolshop/rf-cli
+npm install -g @receipt-factory/cli
 
 # Create a receipt from a GitHub Actions run
 rf make ci --from github --run 12345678

@@ -1,4 +1,4 @@
-import type { ReceiptKind } from "@mcptoolshop/rf-core";
+import type { ReceiptKind } from "@receipt-factory/core";
 
 /**
  * A single file entry in the evidence pack manifest.

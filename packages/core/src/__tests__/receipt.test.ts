@@ -21,7 +21,7 @@ describe("ReceiptBuilder", () => {
 
   it("built receipt passes integrity verification", () => {
     const receipt = new ReceiptBuilder("release")
-      .subject({ type: "package", name: "@mcptoolshop/rf-core", ref: "v1.0.0" })
+      .subject({ type: "package", name: "@receipt-factory/core", ref: "v1.0.0" })
       .intent("Publish v1.0.0 to npm")
       .createdAt("2026-03-03T12:00:00.000Z")
       .addOutput({ name: "rf-core-1.0.0.tgz", digest: "sha256:abc", size: 12345 })

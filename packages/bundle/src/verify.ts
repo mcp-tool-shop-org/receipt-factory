@@ -4,9 +4,9 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { randomBytes } from "node:crypto";
 import AdmZip from "adm-zip";
-import { RfError } from "@mcptoolshop/rf-core";
-import { isCosignAvailable, verifyBlob } from "@mcptoolshop/rf-sign";
-import { verifyReceipt } from "@mcptoolshop/rf-verify";
+import { RfError } from "@receipt-factory/core";
+import { isCosignAvailable, verifyBlob } from "@receipt-factory/sign";
+import { verifyReceipt } from "@receipt-factory/verify";
 import type {
   BundleManifest,
   BundleHashes,

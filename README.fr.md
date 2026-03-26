@@ -32,16 +32,16 @@ Vous pouvez lire un reçu en 30 secondes et le vérifier en 2 minutes. Tout est 
 
 | Paquet | Description |
 |---------|-------------|
-| [`@mcptoolshop/rf-core`](packages/core) | Schéma de reçu, normalisation, hachage SHA-256, API de construction fluide |
-| [`@mcptoolshop/rf-render`](packages/render) | Rendu Markdown et HTML autonome |
-| [`@mcptoolshop/rf-verify`](packages/verify) | Validation de schéma, intégrité des hachages, vérification des liens, application des politiques |
-| [`@mcptoolshop/rf-sign`](packages/sign) | Signature basée sur Cosign — reçus, politiques, ensembles (modules complémentaires détachés) |
-| [`@mcptoolshop/rf-evidence`](packages/evidence) | Ensembles de preuves — ensembles de preuves portables et adressables par contenu |
-| [`@mcptoolshop/rf-index`](packages/index) | Index de reçus — analyse, recherche, filtrage des répertoires de reçus |
-| [`@mcptoolshop/rf-policy`](packages/policy) | Ensembles de politiques — configuration de lint portable et versionnée |
-| [`@mcptoolshop/rf-bundle`](packages/bundle) | Ensembles de reçus — capsules de vérité auto-vérifiantes (zip) |
-| [`@mcptoolshop/rf-adapter-github`](packages/adapters/github) | Récupération des données GitHub Actions via l'interface de ligne de commande `gh` |
-| [`@mcptoolshop/rf-cli`](apps/factory-cli) | La commande `rf` — création, collecte, rendu, vérification, signature des reçus |
+| [`@receipt-factory/core`](packages/core) | Schéma de reçu, normalisation, hachage SHA-256, API de construction fluide |
+| [`@receipt-factory/render`](packages/render) | Rendu Markdown et HTML autonome |
+| [`@receipt-factory/verify`](packages/verify) | Validation de schéma, intégrité des hachages, vérification des liens, application des politiques |
+| [`@receipt-factory/sign`](packages/sign) | Signature basée sur Cosign — reçus, politiques, ensembles (modules complémentaires détachés) |
+| [`@receipt-factory/evidence`](packages/evidence) | Ensembles de preuves — ensembles de preuves portables et adressables par contenu |
+| [`@receipt-factory/index`](packages/index) | Index de reçus — analyse, recherche, filtrage des répertoires de reçus |
+| [`@receipt-factory/policy`](packages/policy) | Ensembles de politiques — configuration de lint portable et versionnée |
+| [`@receipt-factory/bundle`](packages/bundle) | Ensembles de reçus — capsules de vérité auto-vérifiantes (zip) |
+| [`@receipt-factory/adapter-github`](packages/adapters/github) | Récupération des données GitHub Actions via l'interface de ligne de commande `gh` |
+| [`@receipt-factory/cli`](apps/factory-cli) | La commande `rf` — création, collecte, rendu, vérification, signature des reçus |
 
 ## Pipelines
 
@@ -57,7 +57,7 @@ Vous pouvez lire un reçu en 30 secondes et le vérifier en 2 minutes. Tout est 
 
 ```bash
 # Install the CLI
-npm install -g @mcptoolshop/rf-cli
+npm install -g @receipt-factory/cli
 
 # Create a receipt from a GitHub Actions run
 rf make ci --from github --run 12345678

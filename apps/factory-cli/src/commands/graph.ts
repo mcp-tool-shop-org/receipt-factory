@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { buildIndex } from "@mcptoolshop/rf-index";
+import { buildIndex } from "@receipt-factory/index";
 
 export interface GraphOptions {
   index?: string;

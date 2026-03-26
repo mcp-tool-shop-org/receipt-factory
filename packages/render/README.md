@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/receipt-factory/readme.png" width="400" />
 </p>
 
-# @mcptoolshop/rf-render
+# @receipt-factory/render
 
 Markdown and HTML renderers for receipts.
 
@@ -11,13 +11,13 @@ Part of [receipt-factory](https://github.com/mcp-tool-shop-org/receipt-factory).
 ## Install
 
 ```bash
-npm install @mcptoolshop/rf-render
+npm install @receipt-factory/render
 ```
 
 ## Usage
 
 ```ts
-import { renderMarkdown, renderHtml } from "@mcptoolshop/rf-render";
+import { renderMarkdown, renderHtml } from "@receipt-factory/render";
 
 const md = renderMarkdown(receipt);
 const html = renderHtml(receipt); // standalone HTML with embedded CSS

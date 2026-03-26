@@ -1,6 +1,6 @@
-import { ReceiptBuilder } from "@mcptoolshop/rf-core";
-import type { Receipt } from "@mcptoolshop/rf-core";
-import type { GitHubReleaseEvidence } from "@mcptoolshop/rf-adapter-github";
+import { ReceiptBuilder } from "@receipt-factory/core";
+import type { Receipt } from "@receipt-factory/core";
+import type { GitHubReleaseEvidence } from "@receipt-factory/adapter-github";
 
 /**
  * Assemble a Receipt from GitHub release evidence.

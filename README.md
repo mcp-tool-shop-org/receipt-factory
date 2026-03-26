@@ -32,16 +32,16 @@ You can read a receipt in 30 seconds and verify it in 2 minutes. Everything is r
 
 | Package | Description |
 |---------|-------------|
-| [`@mcptoolshop/rf-core`](packages/core) | Receipt schema, canonicalization, SHA-256 hashing, fluent builder API |
-| [`@mcptoolshop/rf-render`](packages/render) | Markdown + standalone HTML renderers |
-| [`@mcptoolshop/rf-verify`](packages/verify) | Schema validation, hash integrity, link verification, policy enforcement |
-| [`@mcptoolshop/rf-sign`](packages/sign) | Cosign-based signing — receipts, policies, bundles (detached sidecars) |
-| [`@mcptoolshop/rf-evidence`](packages/evidence) | Evidence packs — portable, content-addressed evidence bundles |
-| [`@mcptoolshop/rf-index`](packages/index) | Receipt index — scan, search, filter receipt directories |
-| [`@mcptoolshop/rf-policy`](packages/policy) | Policy packs — portable, versioned lint configuration |
-| [`@mcptoolshop/rf-bundle`](packages/bundle) | Receipt bundles — self-verifying truth capsules (zip) |
-| [`@mcptoolshop/rf-adapter-github`](packages/adapters/github) | GitHub Actions data fetching via `gh` CLI |
-| [`@mcptoolshop/rf-cli`](apps/factory-cli) | The `rf` command — create, collect, render, verify, sign receipts |
+| [`@receipt-factory/core`](packages/core) | Receipt schema, canonicalization, SHA-256 hashing, fluent builder API |
+| [`@receipt-factory/render`](packages/render) | Markdown + standalone HTML renderers |
+| [`@receipt-factory/verify`](packages/verify) | Schema validation, hash integrity, link verification, policy enforcement |
+| [`@receipt-factory/sign`](packages/sign) | Cosign-based signing — receipts, policies, bundles (detached sidecars) |
+| [`@receipt-factory/evidence`](packages/evidence) | Evidence packs — portable, content-addressed evidence bundles |
+| [`@receipt-factory/index`](packages/index) | Receipt index — scan, search, filter receipt directories |
+| [`@receipt-factory/policy`](packages/policy) | Policy packs — portable, versioned lint configuration |
+| [`@receipt-factory/bundle`](packages/bundle) | Receipt bundles — self-verifying truth capsules (zip) |
+| [`@receipt-factory/adapter-github`](packages/adapters/github) | GitHub Actions data fetching via `gh` CLI |
+| [`@receipt-factory/cli`](apps/factory-cli) | The `rf` command — create, collect, render, verify, sign receipts |
 
 ## Pipelines
 
@@ -57,7 +57,7 @@ You can read a receipt in 30 seconds and verify it in 2 minutes. Everything is r
 
 ```bash
 # Install the CLI
-npm install -g @mcptoolshop/rf-cli
+npm install -g @receipt-factory/cli
 
 # Create a receipt from a GitHub Actions run
 rf make ci --from github --run 12345678

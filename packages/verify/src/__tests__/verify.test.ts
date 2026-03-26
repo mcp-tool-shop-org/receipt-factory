@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { ReceiptBuilder, computeDigest } from "@mcptoolshop/rf-core";
+import { ReceiptBuilder, computeDigest } from "@receipt-factory/core";
 import { checkSchema } from "../schema-check.js";
 import { checkHash } from "../hash-check.js";
 import { checkLinks } from "../link-check.js";

@@ -1,9 +1,9 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { renderMarkdown, renderHtml } from "@mcptoolshop/rf-render";
-import { canonicalize } from "@mcptoolshop/rf-core";
-import type { Receipt } from "@mcptoolshop/rf-core";
-import type { FetchOptions } from "@mcptoolshop/rf-adapter-github";
+import { renderMarkdown, renderHtml } from "@receipt-factory/render";
+import { canonicalize } from "@receipt-factory/core";
+import type { Receipt } from "@receipt-factory/core";
+import type { FetchOptions } from "@receipt-factory/adapter-github";
 import { collect } from "./collect.js";
 import { assemble } from "./assemble.js";
 

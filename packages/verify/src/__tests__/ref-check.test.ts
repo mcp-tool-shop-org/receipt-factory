@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { writeFileSync, mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { ReceiptBuilder } from "@mcptoolshop/rf-core";
+import { ReceiptBuilder } from "@receipt-factory/core";
 import { checkReferences } from "../ref-check.js";
 
 function makeTmpDir(): string {
@@ -123,7 +123,7 @@ describe("checkReferences", () => {
     writeFileSync(receiptPath, JSON.stringify(referencedReceipt));
 
     // Compute the correct hash (same as what computeDigest does)
-    const { computeDigest } = await import("@mcptoolshop/rf-core");
+    const { computeDigest } = await import("@receipt-factory/core");
     const { id: _id, integrity: _integrity, ...draft } = referencedReceipt;
     const correctHash = computeDigest(draft);
 

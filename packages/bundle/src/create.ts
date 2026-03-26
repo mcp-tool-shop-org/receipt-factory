@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync, existsSync, readdirSync, statSync, mkdirSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import AdmZip from "adm-zip";
-import { RfError, computeDigest } from "@mcptoolshop/rf-core";
+import { RfError, computeDigest } from "@receipt-factory/core";
 import type {
   BundleManifest,
   BundleHashes,

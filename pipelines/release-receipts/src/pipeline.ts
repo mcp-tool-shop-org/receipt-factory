@@ -1,8 +1,8 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { renderMarkdown, renderHtml } from "@mcptoolshop/rf-render";
-import { canonicalize } from "@mcptoolshop/rf-core";
-import type { Receipt } from "@mcptoolshop/rf-core";
+import { renderMarkdown, renderHtml } from "@receipt-factory/render";
+import { canonicalize } from "@receipt-factory/core";
+import type { Receipt } from "@receipt-factory/core";
 import { collect, type ReleaseFetchOptions } from "./collect.js";
 import { assemble } from "./assemble.js";
 

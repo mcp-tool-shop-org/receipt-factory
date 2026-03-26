@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/receipt-factory/readme.png" width="400" />
 </p>
 
-# @mcptoolshop/rf-policy
+# @receipt-factory/policy
 
 Policy packs — portable, versioned lint configuration for receipts.
 
@@ -11,13 +11,13 @@ Part of [receipt-factory](https://github.com/mcp-tool-shop-org/receipt-factory).
 ## Install
 
 ```bash
-npm install @mcptoolshop/rf-policy
+npm install @receipt-factory/policy
 ```
 
 ## Usage
 
 ```ts
-import { loadPolicy, computePolicyHash, DEFAULT_POLICY } from "@mcptoolshop/rf-policy";
+import { loadPolicy, computePolicyHash, DEFAULT_POLICY } from "@receipt-factory/policy";
 
 // Load a policy from disk
 const policy = await loadPolicy("policy.json");

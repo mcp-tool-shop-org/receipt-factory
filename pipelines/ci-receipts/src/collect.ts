@@ -1,5 +1,5 @@
-import { fetchCIEvidence } from "@mcptoolshop/rf-adapter-github";
-import type { GitHubCIEvidence, FetchOptions } from "@mcptoolshop/rf-adapter-github";
+import { fetchCIEvidence } from "@receipt-factory/adapter-github";
+import type { GitHubCIEvidence, FetchOptions } from "@receipt-factory/adapter-github";
 
 export type { GitHubCIEvidence };
 

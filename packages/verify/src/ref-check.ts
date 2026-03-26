@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { computeDigest, verifyIntegrity } from "@mcptoolshop/rf-core";
+import { computeDigest, verifyIntegrity } from "@receipt-factory/core";
 import type { VerificationCheck } from "./types.js";
 
 interface Reference {

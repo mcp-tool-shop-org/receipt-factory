@@ -1,4 +1,4 @@
-import { computeDigest } from "@mcptoolshop/rf-core";
+import { computeDigest } from "@receipt-factory/core";
 import type { VerificationCheck } from "./types.js";
 
 /**

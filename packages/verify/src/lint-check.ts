@@ -2,7 +2,7 @@ import type { VerificationCheck } from "./types.js";
 
 /**
  * Configurable lint rules for receipt quality checks.
- * Re-declared here to avoid a hard dependency on @mcptoolshop/rf-policy.
+ * Re-declared here to avoid a hard dependency on @receipt-factory/policy.
  */
 export interface PolicyRules {
   intent_min_length: number;

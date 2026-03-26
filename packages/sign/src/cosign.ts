@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { RfError } from "@mcptoolshop/rf-core";
+import { RfError } from "@receipt-factory/core";
 
 const execFileAsync = promisify(execFile);
 

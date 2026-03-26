@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { writeFileSync, mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { ReceiptBuilder } from "@mcptoolshop/rf-core";
+import { ReceiptBuilder } from "@receipt-factory/core";
 
 // Test the cosign availability check (works without cosign installed)
 import { isCosignAvailable } from "../cosign.js";

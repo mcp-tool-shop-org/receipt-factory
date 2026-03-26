@@ -32,16 +32,16 @@ Puede leer un recibo en 30 segundos y verificarlo en 2 minutos. Todo es reproduc
 
 | Paquete | Descripción |
 |---------|-------------|
-| [`@mcptoolshop/rf-core`](packages/core) | Esquema de recibo, normalización, hashing SHA-256, API de constructor fluido |
-| [`@mcptoolshop/rf-render`](packages/render) | Renderizadores Markdown + HTML independientes |
-| [`@mcptoolshop/rf-verify`](packages/verify) | Validación de esquema, integridad de hash, verificación de enlaces, aplicación de políticas |
-| [`@mcptoolshop/rf-sign`](packages/sign) | Firma basada en Cosign — recibos, políticas, paquetes (complementos separados) |
-| [`@mcptoolshop/rf-evidence`](packages/evidence) | Paquetes de evidencia — paquetes de evidencia portátiles y direccionados por contenido |
-| [`@mcptoolshop/rf-index`](packages/index) | Índice de recibos — escanear, buscar y filtrar directorios de recibos |
-| [`@mcptoolshop/rf-policy`](packages/policy) | Paquetes de políticas — configuración de lint portátiles y con versiones |
-| [`@mcptoolshop/rf-bundle`](packages/bundle) | Paquetes de recibos — cápsulas de verdad auto-verificables (zip) |
-| [`@mcptoolshop/rf-adapter-github`](packages/adapters/github) | Obtención de datos de GitHub Actions a través de la CLI `gh` |
-| [`@mcptoolshop/rf-cli`](apps/factory-cli) | El comando `rf` — crear, recopilar, renderizar, verificar y firmar recibos |
+| [`@receipt-factory/core`](packages/core) | Esquema de recibo, normalización, hashing SHA-256, API de constructor fluido |
+| [`@receipt-factory/render`](packages/render) | Renderizadores Markdown + HTML independientes |
+| [`@receipt-factory/verify`](packages/verify) | Validación de esquema, integridad de hash, verificación de enlaces, aplicación de políticas |
+| [`@receipt-factory/sign`](packages/sign) | Firma basada en Cosign — recibos, políticas, paquetes (complementos separados) |
+| [`@receipt-factory/evidence`](packages/evidence) | Paquetes de evidencia — paquetes de evidencia portátiles y direccionados por contenido |
+| [`@receipt-factory/index`](packages/index) | Índice de recibos — escanear, buscar y filtrar directorios de recibos |
+| [`@receipt-factory/policy`](packages/policy) | Paquetes de políticas — configuración de lint portátiles y con versiones |
+| [`@receipt-factory/bundle`](packages/bundle) | Paquetes de recibos — cápsulas de verdad auto-verificables (zip) |
+| [`@receipt-factory/adapter-github`](packages/adapters/github) | Obtención de datos de GitHub Actions a través de la CLI `gh` |
+| [`@receipt-factory/cli`](apps/factory-cli) | El comando `rf` — crear, recopilar, renderizar, verificar y firmar recibos |
 
 ## Canales
 
@@ -57,7 +57,7 @@ Puede leer un recibo en 30 segundos y verificarlo en 2 minutos. Todo es reproduc
 
 ```bash
 # Install the CLI
-npm install -g @mcptoolshop/rf-cli
+npm install -g @receipt-factory/cli
 
 # Create a receipt from a GitHub Actions run
 rf make ci --from github --run 12345678

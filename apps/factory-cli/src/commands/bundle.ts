@@ -2,8 +2,8 @@ import {
   createBundle,
   verifyBundle,
   inspectBundle,
-} from "@mcptoolshop/rf-bundle";
-import { signBundle } from "@mcptoolshop/rf-sign";
+} from "@receipt-factory/bundle";
+import { signBundle } from "@receipt-factory/sign";
 
 export interface BundleCreateOptions {
   follow?: boolean;

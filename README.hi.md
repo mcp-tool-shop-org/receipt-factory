@@ -32,16 +32,16 @@
 
 | पैकेज | विवरण |
 |---------|-------------|
-| [`@mcptoolshop/rf-core`](packages/core) | रसीद स्कीमा, मानकीकरण, SHA-256 हैशिंग, फ्लुएंट बिल्डर एपीआई |
-| [`@mcptoolshop/rf-render`](packages/render) | मार्कडाउन + स्टैंडअलोन HTML रेंडरर |
-| [`@mcptoolshop/rf-verify`](packages/verify) | स्कीमा सत्यापन, हैश अखंडता, लिंक सत्यापन, नीति प्रवर्तन |
-| [`@mcptoolshop/rf-sign`](packages/sign) | Cosign-आधारित हस्ताक्षर — रसीदें, नीतियां, बंडल (अलग साइडकार) |
-| [`@mcptoolshop/rf-evidence`](packages/evidence) | सबूत पैक — पोर्टेबल, सामग्री-आधारित सबूत बंडल |
-| [`@mcptoolshop/rf-index`](packages/index) | रसीद इंडेक्स — स्कैन करें, खोजें, रसीद निर्देशिकाओं को फ़िल्टर करें |
-| [`@mcptoolshop/rf-policy`](packages/policy) | नीति पैक — पोर्टेबल, संस्करणित लिंट कॉन्फ़िगरेशन |
-| [`@mcptoolshop/rf-bundle`](packages/bundle) | रसीद बंडल — स्व-सत्यापित सत्य कैप्सूल (ज़िप) |
-| [`@mcptoolshop/rf-adapter-github`](packages/adapters/github) | `gh` CLI के माध्यम से GitHub Actions डेटा प्राप्त करना |
-| [`@mcptoolshop/rf-cli`](apps/factory-cli) | `rf` कमांड — रसीदें बनाएं, एकत्र करें, रेंडर करें, सत्यापित करें, हस्ताक्षर करें |
+| [`@receipt-factory/core`](packages/core) | रसीद स्कीमा, मानकीकरण, SHA-256 हैशिंग, फ्लुएंट बिल्डर एपीआई |
+| [`@receipt-factory/render`](packages/render) | मार्कडाउन + स्टैंडअलोन HTML रेंडरर |
+| [`@receipt-factory/verify`](packages/verify) | स्कीमा सत्यापन, हैश अखंडता, लिंक सत्यापन, नीति प्रवर्तन |
+| [`@receipt-factory/sign`](packages/sign) | Cosign-आधारित हस्ताक्षर — रसीदें, नीतियां, बंडल (अलग साइडकार) |
+| [`@receipt-factory/evidence`](packages/evidence) | सबूत पैक — पोर्टेबल, सामग्री-आधारित सबूत बंडल |
+| [`@receipt-factory/index`](packages/index) | रसीद इंडेक्स — स्कैन करें, खोजें, रसीद निर्देशिकाओं को फ़िल्टर करें |
+| [`@receipt-factory/policy`](packages/policy) | नीति पैक — पोर्टेबल, संस्करणित लिंट कॉन्फ़िगरेशन |
+| [`@receipt-factory/bundle`](packages/bundle) | रसीद बंडल — स्व-सत्यापित सत्य कैप्सूल (ज़िप) |
+| [`@receipt-factory/adapter-github`](packages/adapters/github) | `gh` CLI के माध्यम से GitHub Actions डेटा प्राप्त करना |
+| [`@receipt-factory/cli`](apps/factory-cli) | `rf` कमांड — रसीदें बनाएं, एकत्र करें, रेंडर करें, सत्यापित करें, हस्ताक्षर करें |
 
 ## पाइपलाइन
 
@@ -57,7 +57,7 @@
 
 ```bash
 # Install the CLI
-npm install -g @mcptoolshop/rf-cli
+npm install -g @receipt-factory/cli
 
 # Create a receipt from a GitHub Actions run
 rf make ci --from github --run 12345678

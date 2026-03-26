@@ -1,5 +1,5 @@
 import AdmZip from "adm-zip";
-import { RfError } from "@mcptoolshop/rf-core";
+import { RfError } from "@receipt-factory/core";
 import type { BundleManifest } from "./types.js";
 
 /**

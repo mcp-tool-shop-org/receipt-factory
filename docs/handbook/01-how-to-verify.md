@@ -6,7 +6,7 @@ Verification is the whole point. A receipt you can't verify is just a story.
 
 ```bash
 # Install the CLI
-npm install -g @mcptoolshop/rf-cli
+npm install -g @receipt-factory/cli
 
 # Verify a receipt
 rf verify receipts/ci/2026-03-03/12345.json

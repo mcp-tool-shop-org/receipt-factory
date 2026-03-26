@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/receipt-factory/readme.png" width="400" />
 </p>
 
-# @mcptoolshop/rf-core
+# @receipt-factory/core
 
 Receipt schema, canonicalization, and content-addressed hashing.
 
@@ -11,13 +11,13 @@ Part of [receipt-factory](https://github.com/mcp-tool-shop-org/receipt-factory).
 ## Install
 
 ```bash
-npm install @mcptoolshop/rf-core
+npm install @receipt-factory/core
 ```
 
 ## Usage
 
 ```ts
-import { ReceiptBuilder, computeIntegrity, verifyIntegrity } from "@mcptoolshop/rf-core";
+import { ReceiptBuilder, computeIntegrity, verifyIntegrity } from "@receipt-factory/core";
 
 const receipt = new ReceiptBuilder()
   .kind("ci_run")

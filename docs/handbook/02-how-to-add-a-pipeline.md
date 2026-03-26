@@ -14,7 +14,7 @@ async function collect(source: string, opts: Options): Promise<EvidenceBundle>;
 function assemble(evidence: EvidenceBundle): Receipt;
 ```
 
-Rendering and verification are handled by the shared `@mcptoolshop/rf-render` and `@mcptoolshop/rf-verify` packages. Don't duplicate that logic.
+Rendering and verification are handled by the shared `@receipt-factory/render` and `@receipt-factory/verify` packages. Don't duplicate that logic.
 
 ## Adding a new pipeline
 
@@ -36,12 +36,12 @@ pipelines/
 
 ```json
 {
-  "name": "@mcptoolshop/rf-pipeline-my",
+  "name": "@receipt-factory/pipeline-my",
   "private": true,
   "type": "module",
   "dependencies": {
-    "@mcptoolshop/rf-core": "workspace:*",
-    "@mcptoolshop/rf-render": "workspace:*"
+    "@receipt-factory/core": "workspace:*",
+    "@receipt-factory/render": "workspace:*"
   }
 }
 ```
@@ -51,7 +51,7 @@ pipelines/
 4. Implement `assemble.ts` — use `ReceiptBuilder` to construct the receipt:
 
 ```typescript
-import { ReceiptBuilder } from "@mcptoolshop/rf-core";
+import { ReceiptBuilder } from "@receipt-factory/core";
 
 export function assemble(evidence: MyEvidence): Receipt {
   return new ReceiptBuilder("my_kind")
@@ -82,5 +82,5 @@ export function assemble(evidence: MyEvidence): Receipt {
 - Pipeline packages are `private: true` (not published to npm)
 - The CLI is the public entry point — pipelines are internal
 - Evidence types are specific to each pipeline
-- Receipt kinds must be added to `ReceiptKind` in `@mcptoolshop/rf-core`
+- Receipt kinds must be added to `ReceiptKind` in `@receipt-factory/core`
 - Always include "what this does NOT prove" in the receipt intent

@@ -1,4 +1,4 @@
-import type { ReceiptKind, ReceiptSubject } from "@mcptoolshop/rf-core";
+import type { ReceiptKind, ReceiptSubject } from "@receipt-factory/core";
 
 /**
  * A summary entry for a receipt in the index.

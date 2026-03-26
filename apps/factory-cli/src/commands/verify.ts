@@ -1,9 +1,9 @@
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, extname } from "node:path";
-import { verifyReceipt, formatResult } from "@mcptoolshop/rf-verify";
-import { loadPolicy } from "@mcptoolshop/rf-policy";
-import { verifyBlob } from "@mcptoolshop/rf-sign";
-import { verifyBundle } from "@mcptoolshop/rf-bundle";
+import { verifyReceipt, formatResult } from "@receipt-factory/verify";
+import { loadPolicy } from "@receipt-factory/policy";
+import { verifyBlob } from "@receipt-factory/sign";
+import { verifyBundle } from "@receipt-factory/bundle";
 
 export interface VerifyOptions {
   offline: boolean;

@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { RfError, computeDigest } from "@mcptoolshop/rf-core";
+import { RfError, computeDigest } from "@receipt-factory/core";
 import type { PolicyPack, PolicyRules } from "./types.js";
 import { DEFAULT_RULES } from "./defaults.js";
 

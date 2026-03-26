@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { renderMarkdown, renderHtml } from "@mcptoolshop/rf-render";
-import type { Receipt } from "@mcptoolshop/rf-core";
-import { RfError } from "@mcptoolshop/rf-core";
+import { renderMarkdown, renderHtml } from "@receipt-factory/render";
+import type { Receipt } from "@receipt-factory/core";
+import { RfError } from "@receipt-factory/core";
 
 export interface RenderOptions {
   format: string;

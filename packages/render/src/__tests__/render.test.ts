@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { ReceiptBuilder } from "@mcptoolshop/rf-core";
+import { ReceiptBuilder } from "@receipt-factory/core";
 import { renderMarkdown } from "../markdown.js";
 import { renderHtml } from "../html.js";
 

@@ -1,5 +1,5 @@
-import { ReceiptBuilder } from "@mcptoolshop/rf-core";
-import type { Receipt } from "@mcptoolshop/rf-core";
+import { ReceiptBuilder } from "@receipt-factory/core";
+import type { Receipt } from "@receipt-factory/core";
 import type { SbomEvidence } from "./types.js";
 
 /**

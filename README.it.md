@@ -32,16 +32,16 @@ Una ricevuta è un documento firmato, con timestamp, riproducibile che registra 
 
 | Pacchetto | Descrizione |
 |---------|-------------|
-| [`@mcptoolshop/rf-core`](packages/core) | Schema delle ricevute, canonicalizzazione, hashing SHA-256, API fluent builder |
-| [`@mcptoolshop/rf-render`](packages/render) | Renderer Markdown e HTML standalone |
-| [`@mcptoolshop/rf-verify`](packages/verify) | Validazione dello schema, integrità degli hash, verifica dei link, applicazione delle politiche |
-| [`@mcptoolshop/rf-sign`](packages/sign) | Firme basate su Cosign — ricevute, politiche, bundle (sidecar separati) |
-| [`@mcptoolshop/rf-evidence`](packages/evidence) | Pacchetti di prove — bundle di prove portabili e indirizzabili per contenuto |
-| [`@mcptoolshop/rf-index`](packages/index) | Indice delle ricevute — scansione, ricerca e filtraggio di directory di ricevute |
-| [`@mcptoolshop/rf-policy`](packages/policy) | Pacchetti di politiche — configurazione di lint portabile e con versioni |
-| [`@mcptoolshop/rf-bundle`](packages/bundle) | Bundle di ricevute — capsule di verità auto-verificanti (zip) |
-| [`@mcptoolshop/rf-adapter-github`](packages/adapters/github) | Recupero dei dati di GitHub Actions tramite la CLI `gh` |
-| [`@mcptoolshop/rf-cli`](apps/factory-cli) | Il comando `rf` — creazione, raccolta, rendering, verifica e firma delle ricevute |
+| [`@receipt-factory/core`](packages/core) | Schema delle ricevute, canonicalizzazione, hashing SHA-256, API fluent builder |
+| [`@receipt-factory/render`](packages/render) | Renderer Markdown e HTML standalone |
+| [`@receipt-factory/verify`](packages/verify) | Validazione dello schema, integrità degli hash, verifica dei link, applicazione delle politiche |
+| [`@receipt-factory/sign`](packages/sign) | Firme basate su Cosign — ricevute, politiche, bundle (sidecar separati) |
+| [`@receipt-factory/evidence`](packages/evidence) | Pacchetti di prove — bundle di prove portabili e indirizzabili per contenuto |
+| [`@receipt-factory/index`](packages/index) | Indice delle ricevute — scansione, ricerca e filtraggio di directory di ricevute |
+| [`@receipt-factory/policy`](packages/policy) | Pacchetti di politiche — configurazione di lint portabile e con versioni |
+| [`@receipt-factory/bundle`](packages/bundle) | Bundle di ricevute — capsule di verità auto-verificanti (zip) |
+| [`@receipt-factory/adapter-github`](packages/adapters/github) | Recupero dei dati di GitHub Actions tramite la CLI `gh` |
+| [`@receipt-factory/cli`](apps/factory-cli) | Il comando `rf` — creazione, raccolta, rendering, verifica e firma delle ricevute |
 
 ## Pipeline
 
@@ -57,7 +57,7 @@ Una ricevuta è un documento firmato, con timestamp, riproducibile che registra 
 
 ```bash
 # Install the CLI
-npm install -g @mcptoolshop/rf-cli
+npm install -g @receipt-factory/cli
 
 # Create a receipt from a GitHub Actions run
 rf make ci --from github --run 12345678

@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
-import { safeValidateReceipt, verifyIntegrity } from "@mcptoolshop/rf-core";
+import { safeValidateReceipt, verifyIntegrity } from "@receipt-factory/core";
 import type { ReceiptIndex, ReceiptIndexEntry } from "./types.js";
 
 export interface BuildOptions {

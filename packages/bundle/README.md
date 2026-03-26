@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/receipt-factory/readme.png" width="400" />
 </p>
 
-# @mcptoolshop/rf-bundle
+# @receipt-factory/bundle
 
 Receipt bundles — portable, self-verifying truth capsules.
 
@@ -11,13 +11,13 @@ Part of [receipt-factory](https://github.com/mcp-tool-shop-org/receipt-factory).
 ## Install
 
 ```bash
-npm install @mcptoolshop/rf-bundle
+npm install @receipt-factory/bundle
 ```
 
 ## Usage
 
 ```ts
-import { createBundle, verifyBundle, inspectBundle } from "@mcptoolshop/rf-bundle";
+import { createBundle, verifyBundle, inspectBundle } from "@receipt-factory/bundle";
 
 // Create a bundle from a receipt (follows evidence + policy refs)
 const result = await createBundle("receipt.json", {

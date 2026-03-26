@@ -2,8 +2,8 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { mkdtempSync, rmSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { ReceiptBuilder } from "@mcptoolshop/rf-core";
-import type { Receipt } from "@mcptoolshop/rf-core";
+import { ReceiptBuilder } from "@receipt-factory/core";
+import type { Receipt } from "@receipt-factory/core";
 import { buildIndex } from "../build.js";
 import { searchIndex } from "../search.js";
 

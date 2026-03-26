@@ -1,5 +1,5 @@
 import { writeFileSync } from "node:fs";
-import { DEFAULT_POLICY } from "@mcptoolshop/rf-policy";
+import { DEFAULT_POLICY } from "@receipt-factory/policy";
 
 export interface PolicyInitOptions {
   output?: string;

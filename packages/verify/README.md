@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/receipt-factory/readme.png" width="400" />
 </p>
 
-# @mcptoolshop/rf-verify
+# @receipt-factory/verify
 
 Receipt verification — schema validation, hash checking, link verification, and policy enforcement.
 
@@ -11,13 +11,13 @@ Part of [receipt-factory](https://github.com/mcp-tool-shop-org/receipt-factory).
 ## Install
 
 ```bash
-npm install @mcptoolshop/rf-verify
+npm install @receipt-factory/verify
 ```
 
 ## Usage
 
 ```ts
-import { verifyReceipt, verifyAndFormat } from "@mcptoolshop/rf-verify";
+import { verifyReceipt, verifyAndFormat } from "@receipt-factory/verify";
 
 // Quick verify
 const result = await verifyReceipt(receipt, { strict: true });

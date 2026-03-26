@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { RfError } from "@mcptoolshop/rf-core";
+import { RfError } from "@receipt-factory/core";
 import type { PackManifest } from "./types.js";
 
 /**

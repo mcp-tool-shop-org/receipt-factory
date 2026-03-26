@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/receipt-factory/readme.png" width="400" />
 </p>
 
-# @mcptoolshop/rf-evidence
+# @receipt-factory/evidence
 
 Evidence packs — portable, content-addressed bundles for offline receipt assembly.
 
@@ -11,13 +11,13 @@ Part of [receipt-factory](https://github.com/mcp-tool-shop-org/receipt-factory).
 ## Install
 
 ```bash
-npm install @mcptoolshop/rf-evidence
+npm install @receipt-factory/evidence
 ```
 
 ## Usage
 
 ```ts
-import { writeEvidencePack, readEvidencePack } from "@mcptoolshop/rf-evidence";
+import { writeEvidencePack, readEvidencePack } from "@receipt-factory/evidence";
 
 // Write an evidence pack to disk
 await writeEvidencePack("evidence/ci/run-123/", {

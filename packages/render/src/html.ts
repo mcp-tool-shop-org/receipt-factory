@@ -1,5 +1,5 @@
-import type { Receipt } from "@mcptoolshop/rf-core";
-import { canonicalize } from "@mcptoolshop/rf-core";
+import type { Receipt } from "@receipt-factory/core";
+import { canonicalize } from "@receipt-factory/core";
 import { RECEIPT_CSS } from "./styles.js";
 
 /**
