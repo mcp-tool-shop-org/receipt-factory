@@ -17,46 +17,46 @@ importers:
 
   apps/factory-cli:
     dependencies:
-      '@mcptoolshop/rf-adapter-github':
+      '@receipt-factory/adapter-github':
         specifier: workspace:*
         version: link:../../packages/adapters/github
-      '@mcptoolshop/rf-bundle':
+      '@receipt-factory/bundle':
         specifier: workspace:*
         version: link:../../packages/bundle
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@mcptoolshop/rf-evidence':
+      '@receipt-factory/evidence':
         specifier: workspace:*
         version: link:../../packages/evidence
-      '@mcptoolshop/rf-index':
+      '@receipt-factory/index':
         specifier: workspace:*
         version: link:../../packages/index
-      '@mcptoolshop/rf-pipeline-ci':
+      '@receipt-factory/pipeline-ci':
         specifier: workspace:*
         version: link:../../pipelines/ci-receipts
-      '@mcptoolshop/rf-pipeline-registry-sync':
+      '@receipt-factory/pipeline-registry-sync':
         specifier: workspace:*
         version: link:../../pipelines/registry-sync
-      '@mcptoolshop/rf-pipeline-release':
+      '@receipt-factory/pipeline-release':
         specifier: workspace:*
         version: link:../../pipelines/release-receipts
-      '@mcptoolshop/rf-pipeline-sbom':
+      '@receipt-factory/pipeline-sbom':
         specifier: workspace:*
         version: link:../../pipelines/sbom
-      '@mcptoolshop/rf-pipeline-security-audit':
+      '@receipt-factory/pipeline-security-audit':
         specifier: workspace:*
         version: link:../../pipelines/security-audit
-      '@mcptoolshop/rf-policy':
+      '@receipt-factory/policy':
         specifier: workspace:*
         version: link:../../packages/policy
-      '@mcptoolshop/rf-render':
+      '@receipt-factory/render':
         specifier: workspace:*
         version: link:../../packages/render
-      '@mcptoolshop/rf-sign':
+      '@receipt-factory/sign':
         specifier: workspace:*
         version: link:../../packages/sign
-      '@mcptoolshop/rf-verify':
+      '@receipt-factory/verify':
         specifier: workspace:*
         version: link:../../packages/verify
       commander:
@@ -75,7 +75,7 @@ importers:
 
   packages/adapters/github:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../../core
     devDependencies:
@@ -91,13 +91,13 @@ importers:
 
   packages/bundle:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../core
-      '@mcptoolshop/rf-sign':
+      '@receipt-factory/sign':
         specifier: workspace:*
         version: link:../sign
-      '@mcptoolshop/rf-verify':
+      '@receipt-factory/verify':
         specifier: workspace:*
         version: link:../verify
       adm-zip:
@@ -135,7 +135,7 @@ importers:
 
   packages/evidence:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -151,10 +151,10 @@ importers:
 
   packages/index:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../core
-      '@mcptoolshop/rf-verify':
+      '@receipt-factory/verify':
         specifier: workspace:*
         version: link:../verify
     devDependencies:
@@ -170,7 +170,7 @@ importers:
 
   packages/policy:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -186,7 +186,7 @@ importers:
 
   packages/render:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -202,7 +202,7 @@ importers:
 
   packages/sign:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -218,7 +218,7 @@ importers:
 
   packages/verify:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -234,13 +234,13 @@ importers:
 
   pipelines/ci-receipts:
     dependencies:
-      '@mcptoolshop/rf-adapter-github':
+      '@receipt-factory/adapter-github':
         specifier: workspace:*
         version: link:../../packages/adapters/github
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@mcptoolshop/rf-render':
+      '@receipt-factory/render':
         specifier: workspace:*
         version: link:../../packages/render
     devDependencies:
@@ -256,7 +256,7 @@ importers:
 
   pipelines/registry-sync:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../../packages/core
     devDependencies:
@@ -272,13 +272,13 @@ importers:
 
   pipelines/release-receipts:
     dependencies:
-      '@mcptoolshop/rf-adapter-github':
+      '@receipt-factory/adapter-github':
         specifier: workspace:*
         version: link:../../packages/adapters/github
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@mcptoolshop/rf-render':
+      '@receipt-factory/render':
         specifier: workspace:*
         version: link:../../packages/render
     devDependencies:
@@ -294,7 +294,7 @@ importers:
 
   pipelines/sbom:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../../packages/core
     devDependencies:
@@ -310,7 +310,7 @@ importers:
 
   pipelines/security-audit:
     dependencies:
-      '@mcptoolshop/rf-core':
+      '@receipt-factory/core':
         specifier: workspace:*
         version: link:../../packages/core
     devDependencies:
