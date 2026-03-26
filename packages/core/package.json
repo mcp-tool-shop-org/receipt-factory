@@ -1,6 +1,6 @@
 {
-  "name": "@mcptoolshop/rf-core",
-  "version": "1.7.2",
+  "name": "@receipt-factory/core",
+  "version": "1.7.3",
   "description": "Receipt schema, canonicalization, and content-addressed hashing",
   "type": "module",
   "main": "dist/index.js",

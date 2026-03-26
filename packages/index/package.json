@@ -1,6 +1,6 @@
 {
-  "name": "@mcptoolshop/rf-index",
-  "version": "1.7.2",
+  "name": "@receipt-factory/index",
+  "version": "1.7.3",
   "description": "Receipt index — scan, index, and search receipt directories",
   "type": "module",
   "main": "dist/index.js",
@@ -24,8 +24,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mcptoolshop/rf-core": "workspace:*",
-    "@mcptoolshop/rf-verify": "workspace:*"
+    "@receipt-factory/core": "workspace:*",
+    "@receipt-factory/verify": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

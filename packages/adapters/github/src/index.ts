@@ -1,4 +1,4 @@
-import { RfError } from "@mcptoolshop/rf-core";
+import { RfError } from "@receipt-factory/core";
 import { detectContext } from "./context.js";
 import { isGhAvailable } from "./gh.js";
 import { fetchRun } from "./runs.js";

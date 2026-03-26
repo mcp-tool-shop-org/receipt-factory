@@ -1,6 +1,6 @@
 {
-  "name": "@mcptoolshop/rf-pipeline-sbom",
-  "version": "1.7.2",
+  "name": "@receipt-factory/pipeline-sbom",
+  "version": "1.7.3",
   "private": true,
   "description": "SBOM pipeline — attest to a software bill of materials",
   "type": "module",
@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mcptoolshop/rf-core": "workspace:*"
+    "@receipt-factory/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

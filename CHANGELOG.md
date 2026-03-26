@@ -5,19 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.3] - 2026-03-25
+
+### Fixed
+- CHANGELOG gap — added missing entries for 1.7.1 and 1.7.2
+
+### Added
+- Version alignment test suite (3 tests) in core package
+
+### Changed
+- SHA-pin all CI workflow actions (checkout, setup-node, pnpm/action-setup, upload-artifact, upload-pages-artifact, deploy-pages) for supply chain security
+
+## [1.7.2] - 2026-03-25
+
+### Changed
+- Patch release (details not previously documented)
+
+## [1.7.1] - 2026-03-25
+
+### Changed
+- Patch release (details not previously documented)
+
 ## [1.7.0] - 2026-03-03
 
 ### Added
 
 - **Three supply chain receipt pipelines** — new receipt kinds for security teams and executives:
-  - **`registry-sync`** (`@mcptoolshop/rf-pipeline-registry-sync`): Prove what's published vs what's in the repo
+  - **`registry-sync`** (`@receipt-factory/pipeline-registry-sync`): Prove what's published vs what's in the repo
     - Drift classification: in sync, ahead, behind, unpublished
     - Each package becomes a receipt output with version comparison
-  - **`security-audit`** (`@mcptoolshop/rf-pipeline-security-audit`): Prove what you scanned, with what tool, and what was found
+  - **`security-audit`** (`@receipt-factory/pipeline-security-audit`): Prove what you scanned, with what tool, and what was found
     - Severity breakdown (critical/high/moderate/low/info) in intent and metadata
     - Each finding becomes a receipt output with advisory details
     - Lockfile snapshot evidence for dependency graph provenance
-  - **`sbom`** (`@mcptoolshop/rf-pipeline-sbom`): Produce and attest to a software bill of materials
+  - **`sbom`** (`@receipt-factory/pipeline-sbom`): Produce and attest to a software bill of materials
     - Supports CycloneDX and SPDX formats
     - SBOM file as primary output with SHA-256 digest and size
     - Generator tool recorded in environment
@@ -39,10 +60,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Bundle signing** (`@mcptoolshop/rf-sign`): `signBundle()` signs a bundle zip with cosign (detached sidecar)
+- **Bundle signing** (`@receipt-factory/sign`): `signBundle()` signs a bundle zip with cosign (detached sidecar)
   - Produces `bundle.zip.sig` and `bundle.zip.cert` — the zip contents are never mutated
   - Same sidecar pattern as `signReceipt()` and `signPolicy()`
-- **Bundle signature verification** (`@mcptoolshop/rf-bundle`): `verifyBundle()` now supports `requireBundleSignature` option
+- **Bundle signature verification** (`@receipt-factory/bundle`): `verifyBundle()` now supports `requireBundleSignature` option
   - Verification order: 1) bundle signature → 2) file integrity (hashes.json) → 3) semantic integrity (receipts)
   - If signature fails, verification returns early — no point unpacking a bundle whose provenance can't be established
   - Sidecar search: looks for `.sig` and `.cert` files next to the bundle
@@ -55,14 +76,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- `@mcptoolshop/rf-bundle` now depends on `@mcptoolshop/rf-sign` (for `verifyBlob`/`isCosignAvailable`)
+- `@receipt-factory/bundle` now depends on `@receipt-factory/sign` (for `verifyBlob`/`isCosignAvailable`)
 - 152 tests across 13 packages (up from 147)
 
 ## [1.5.0] - 2026-03-03
 
 ### Added
 
-- **`@mcptoolshop/rf-bundle`**: Receipt bundles — portable, self-verifying truth capsules
+- **`@receipt-factory/bundle`**: Receipt bundles — portable, self-verifying truth capsules
   - `createBundle()` packs a receipt + references + evidence + policy into a single zip archive
   - `verifyBundle()` extracts and verifies all hashes and receipts (bundle-internal, no network)
   - `inspectBundle()` reads the manifest without full verification
@@ -97,12 +118,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `PolicyIdentity` type: `hash` (required), optional `version`, `path`, `signed`, `signatureRef`
   - `policyIdentity()` method on `ReceiptBuilder` for fluent chaining
   - `policyIdentitySchema` (Zod) for validation
-  - `computePolicyHash(rules)` utility in `@mcptoolshop/rf-policy`
+  - `computePolicyHash(rules)` utility in `@receipt-factory/policy`
 - **Policy integrity verification**: `checkPolicyIntegrity()` compares receipt's embedded policy hash against supplied policy
   - Mismatch = fail (integrity, not lint quality)
   - No policy supplied = info only (backward compatible)
 - **Policy signing**: `rf policy sign <file>` signs a policy file with cosign (detached sidecar)
-  - `signPolicy()` function in `@mcptoolshop/rf-sign`
+  - `signPolicy()` function in `@receipt-factory/sign`
   - Produces `policy.json.sig` and `policy.json.cert` (keyless)
   - Policy file itself is never modified — hash in receipts refers to original content
 - **`rf verify --require-policy-signature`**: Requires a cosign-signed policy for verification
@@ -124,7 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `addReference()` method on `ReceiptBuilder` for fluent chaining
   - `receiptReferenceSchema` (Zod) for validation
   - Ref-check: `checkReferences()` verifies referenced receipts exist and hashes match
-- **`@mcptoolshop/rf-policy`**: Policy packs — portable, versioned lint configuration
+- **`@receipt-factory/policy`**: Policy packs — portable, versioned lint configuration
   - `PolicyPack` and `PolicyRules` types for configurable quality checks
   - `loadPolicy(path)` reads and validates policy JSON, fills missing rules from defaults
   - `DEFAULT_POLICY` and `DEFAULT_RULES` for built-in quality baseline
@@ -146,11 +167,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **`@mcptoolshop/rf-evidence`**: Evidence packs — portable, content-addressed bundles for offline receipt assembly
+- **`@receipt-factory/evidence`**: Evidence packs — portable, content-addressed bundles for offline receipt assembly
   - `writeEvidencePack()` serializes evidence with SHA-256 content hashes
   - `readEvidencePack()` verifies integrity before deserializing
   - Tamper detection: hash + size mismatch throws structured `RfError`
-- **`@mcptoolshop/rf-index`**: Receipt index — scan, index, and search receipt directories
+- **`@receipt-factory/index`**: Receipt index — scan, index, and search receipt directories
   - `buildIndex()` recursively scans for receipt JSON files, builds machine-readable index
   - `searchIndex()` filters by kind, repo name, date range
   - Optional `--validate` flag runs integrity checks during indexing
@@ -174,7 +195,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Signing fields**: `signed_by`, `signed_at`, `rekor_log_id` in integrity for Sigstore integration
 - **Strict verify mode**: `rf verify --strict` runs lint checks on human-surface fields (intent quality, evidence, verification steps)
 - **Receipt lint**: `rf lint <file>` as alias for `rf verify --strict`
-- **`@mcptoolshop/rf-sign`**: Cosign CLI wrapper — `signReceipt()`, `verifySignature()`, keyless (OIDC) and key-based modes
+- **`@receipt-factory/sign`**: Cosign CLI wrapper — `signReceipt()`, `verifySignature()`, keyless (OIDC) and key-based modes
 - **`rf sign` command**: `rf sign <file> --keyless|--key <path> [--embed]`
 - **Release receipts pipeline**: `rf make release --from github --tag <tag>`
 - **GitHub releases adapter**: `fetchRelease(repo, tag)` via `gh api`
@@ -192,11 +213,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `@mcptoolshop/rf-core`: Receipt schema (Zod + TypeScript), canonicalization, SHA-256 hashing, fluent builder API
-- `@mcptoolshop/rf-render`: Markdown and standalone HTML renderers with human-first front page and technical back matter
-- `@mcptoolshop/rf-verify`: Schema validation, hash integrity checking, link reachability verification
-- `@mcptoolshop/rf-adapter-github`: GitHub Actions data fetching via `gh` CLI with env var auto-detection
-- `@mcptoolshop/rf-cli`: The `rf` command — `make`, `render`, `verify`, `init`
+- `@receipt-factory/core`: Receipt schema (Zod + TypeScript), canonicalization, SHA-256 hashing, fluent builder API
+- `@receipt-factory/render`: Markdown and standalone HTML renderers with human-first front page and technical back matter
+- `@receipt-factory/verify`: Schema validation, hash integrity checking, link reachability verification
+- `@receipt-factory/adapter-github`: GitHub Actions data fetching via `gh` CLI with env var auto-detection
+- `@receipt-factory/cli`: The `rf` command — `make`, `render`, `verify`, `init`
 - CI receipts pipeline: collect → assemble → render → write for GitHub Actions runs
 - Reusable GitHub Actions workflow (`receipt-ci.yml`) wrapping the CLI
 - 64 tests across 6 packages

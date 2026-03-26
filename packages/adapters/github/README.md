@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/receipt-factory/readme.png" width="400" />
 </p>
 
-# @mcptoolshop/rf-adapter-github
+# @receipt-factory/adapter-github
 
 GitHub Actions adapter — fetch CI run data and release information via the `gh` CLI.
 
@@ -11,7 +11,7 @@ Part of [receipt-factory](https://github.com/mcp-tool-shop-org/receipt-factory).
 ## Install
 
 ```bash
-npm install @mcptoolshop/rf-adapter-github
+npm install @receipt-factory/adapter-github
 ```
 
 ## Prerequisites
@@ -21,7 +21,7 @@ Requires the [GitHub CLI](https://cli.github.com/) (`gh`) to be installed and au
 ## Usage
 
 ```ts
-import { fetchCIEvidence, fetchRelease, detectContext, isGhAvailable } from "@mcptoolshop/rf-adapter-github";
+import { fetchCIEvidence, fetchRelease, detectContext, isGhAvailable } from "@receipt-factory/adapter-github";
 
 // Check gh availability
 const available = await isGhAvailable();

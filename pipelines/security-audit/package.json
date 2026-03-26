@@ -1,6 +1,6 @@
 {
-  "name": "@mcptoolshop/rf-pipeline-security-audit",
-  "version": "1.7.2",
+  "name": "@receipt-factory/pipeline-security-audit",
+  "version": "1.7.3",
   "private": true,
   "description": "Security audit pipeline — prove what you scanned and what was found",
   "type": "module",
@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mcptoolshop/rf-core": "workspace:*"
+    "@receipt-factory/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

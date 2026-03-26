@@ -1,6 +1,6 @@
 {
-  "name": "@mcptoolshop/rf-evidence",
-  "version": "1.7.2",
+  "name": "@receipt-factory/evidence",
+  "version": "1.7.3",
   "description": "Evidence packs — portable, content-addressed bundles for offline receipt assembly",
   "type": "module",
   "main": "dist/index.js",
@@ -24,7 +24,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mcptoolshop/rf-core": "workspace:*"
+    "@receipt-factory/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

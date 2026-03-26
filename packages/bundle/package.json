@@ -1,6 +1,6 @@
 {
-  "name": "@mcptoolshop/rf-bundle",
-  "version": "1.7.2",
+  "name": "@receipt-factory/bundle",
+  "version": "1.7.3",
   "description": "Receipt bundles — portable, self-verifying truth capsules",
   "type": "module",
   "main": "dist/index.js",
@@ -24,9 +24,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mcptoolshop/rf-core": "workspace:*",
-    "@mcptoolshop/rf-sign": "workspace:*",
-    "@mcptoolshop/rf-verify": "workspace:*",
+    "@receipt-factory/core": "workspace:*",
+    "@receipt-factory/sign": "workspace:*",
+    "@receipt-factory/verify": "workspace:*",
     "adm-zip": "^0.5.16"
   },
   "devDependencies": {

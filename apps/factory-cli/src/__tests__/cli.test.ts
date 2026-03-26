@@ -1,10 +1,12 @@
 import { describe, it, expect } from "vitest";
 import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const cliPath = join(__dirname, "..", "..", "dist", "cli.js");
+const pkg = JSON.parse(readFileSync(join(__dirname, "..", "..", "package.json"), "utf-8"));
 
 function run(...args: string[]): string {
   return execFileSync("node", [cliPath, ...args], {
@@ -16,7 +18,7 @@ function run(...args: string[]): string {
 describe("rf CLI", () => {
   it("shows version", () => {
     const output = run("--version");
-    expect(output.trim()).toBe("1.7.2");
+    expect(output.trim()).toBe(pkg.version);
   });
 
   it("shows help", () => {

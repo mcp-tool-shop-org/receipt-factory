@@ -1,6 +1,6 @@
 {
-  "name": "@mcptoolshop/rf-pipeline-release",
-  "version": "1.7.2",
+  "name": "@receipt-factory/pipeline-release",
+  "version": "1.7.3",
   "private": true,
   "description": "Release receipts pipeline — produces receipts from GitHub releases",
   "type": "module",
@@ -14,9 +14,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mcptoolshop/rf-core": "workspace:*",
-    "@mcptoolshop/rf-render": "workspace:*",
-    "@mcptoolshop/rf-adapter-github": "workspace:*"
+    "@receipt-factory/core": "workspace:*",
+    "@receipt-factory/render": "workspace:*",
+    "@receipt-factory/adapter-github": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

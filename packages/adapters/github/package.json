@@ -1,6 +1,6 @@
 {
-  "name": "@mcptoolshop/rf-adapter-github",
-  "version": "1.7.2",
+  "name": "@receipt-factory/adapter-github",
+  "version": "1.7.3",
   "description": "GitHub Actions adapter — fetch CI run data via gh CLI",
   "type": "module",
   "main": "dist/index.js",
@@ -24,7 +24,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mcptoolshop/rf-core": "workspace:*"
+    "@receipt-factory/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
